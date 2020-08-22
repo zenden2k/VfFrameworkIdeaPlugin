@@ -1,0 +1,58 @@
+<idea-plugin>
+  <id>com.zenden2k.VfFrameworkIdeaPlugin</id>
+  <name>Vf Framework IDEA integration</name>
+  <version>1.1</version>
+  <vendor email="zenden2k@gmail.com" url="http://zenden2k.com">Sergey Svistunov</vendor>
+
+  <description><![CDATA[
+      Provides autocomplete and navigation features for Vf Framework.<br>
+    ]]></description>
+
+    <change-notes><![CDATA[
+      - Внедрение ссылок на справочник в аргумент методов getAssociative*() класса CGuide<br>
+      - Внедрение javascript-кода в аргумент функции execJS()<br>
+      - Внедрение ссылок на css-классы в атрибут class в XML-файлах<br>
+      - Внедрение ссылок на имя таблицы, схемы и названий полей в XML-файлах объектов
+      ]]>
+    </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="191"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+
+  <depends>com.jetbrains.php</depends>
+  <depends>com.intellij.modules.platform</depends>
+  <depends>com.intellij.css</depends>
+  <depends>com.intellij.database</depends>
+
+  <extensions defaultExtensionNs="org.intellij.intelliLang">
+    <injectionConfig config="injections.xml"/>
+  </extensions>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <psi.referenceContributor implementation="com.zenden2k.VfFrameworkIdeaPlugin.MyPsiReferenceContributor"/>
+    <projectConfigurable instance="com.zenden2k.VfFrameworkIdeaPlugin.config.VfIdeaPluginConfigurable" id="VfFrameworkIdeaPlugin.settings" parentId="reference.webide.settings.project.settings.php" nonDefaultProject="true"/>
+    <dom.fileMetaData implementation="com.zenden2k.VfFrameworkIdeaPlugin.dom.object.MyDomFileDescription" rootTagName="object" domVersion="1" />
+    <dom.fileMetaData implementation="com.zenden2k.VfFrameworkIdeaPlugin.dom.guide.GuideFileDescription" rootTagName="guide" domVersion="1" />
+    <dom.fileMetaData implementation="com.zenden2k.VfFrameworkIdeaPlugin.dom.form.FormFileDescription" rootTagName="form.object" domVersion="1" />
+<!--    <dom.fileMetaData implementation="com.zenden2k.VfFrameworkIdeaPlugin.dom.block.BlockFileDescription" rootTagName="block" domVersion="1" />-->
+  </extensions>
+
+  <extensions defaultExtensionNs="com.jetbrains.php">
+    <typeProvider4 implementation="com.zenden2k.VfFrameworkIdeaPlugin.FactoryTypeProvider"/>
+    <!--    <completion.contributor language="PHP" implementationClass="com.jetbrains.php.lang.psi.resolve.types.PhpStaticFactoryTypeProvider"/>-->
+  </extensions>
+
+<!--  <extensionPoints>-->
+<!--    <extensionPoint name="xmlObject" interface="com.intellij.dom.fileMetaData" rootTagName="object" domVersion="1.0" />-->
+<!--  </extensionPoints>-->
+
+  <actions>
+    <!-- Add your actions here -->
+  </actions>
+
+
+
+</idea-plugin>

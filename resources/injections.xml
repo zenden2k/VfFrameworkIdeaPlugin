@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component name="LanguageInjectionConfiguration">
+    <injection language="JavaScript" injector-id="php">
+        <display-name>Javascript inside execJS call</display-name>
+        <place><![CDATA[phpFirstArgument(phpWithName(string().equalTo("execJS")))]]></place>
+    </injection>
+</component>
