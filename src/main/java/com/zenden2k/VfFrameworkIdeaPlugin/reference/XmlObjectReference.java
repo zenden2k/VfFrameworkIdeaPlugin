@@ -7,21 +7,16 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
-import com.intellij.util.IncorrectOperationException;
 import com.zenden2k.VfFrameworkIdeaPlugin.dom.object.Object;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class XmlObjectReference implements /*PsiPolyVariantReference*/ PsiReference {
-    protected final PsiElement element;
-    protected final TextRange textRange;
+public class XmlObjectReference extends PsiReferenceBase<PsiElement> {
     protected final Project project;
     protected final String objectName;
 
-
     public XmlObjectReference(String objectName, PsiElement element, TextRange textRange, Project project) {
-        this.element = element;
-        this.textRange = textRange;
+        super(element, textRange, false);
         this.project = project;
         this.objectName = objectName;
     }
@@ -32,38 +27,9 @@ public class XmlObjectReference implements /*PsiPolyVariantReference*/ PsiRefere
     }
 
     @Override @NotNull
-    public PsiElement getElement() {
-        return this.element;
-    }
-
-    @Override @NotNull
-    public TextRange getRangeInElement() {
-        return textRange;
-    }
-
-    @Override public PsiElement handleElementRename(@NotNull String newElementName)
-            throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
-    @Override public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
-    @Override public boolean isReferenceTo(@NotNull PsiElement element) {
-        return resolve() == element;
-    }
-
-    @Override @NotNull
     public Object[] getVariants() {
         // TODO: Implement this method
         return new Object[0];
-    }
-
-    @Override public boolean isSoft() {
-        return false;
     }
 
     @Override

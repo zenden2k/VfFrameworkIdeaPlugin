@@ -15,27 +15,24 @@ import com.zenden2k.VfFrameworkIdeaPlugin.utils.PhpIndexUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
-public class StaticDataSourceReference implements /*PsiPolyVariantReference*/ PsiReference {
-    protected final PsiElement element;
-    protected final TextRange textRange;
+public class StaticDataSourceReference extends PsiReferenceBase<PsiElement> {
     protected final Project project;
     protected final String path;
     protected PhpType type;
     protected String objectName;
 
     public StaticDataSourceReference(String path, PsiElement element, TextRange textRange, Project project, PhpType type) {
-        this.element = element;
-        this.textRange = textRange;
+        super(element, textRange, false);
         this.project = project;
         this.path = path;
         this.type = type;
     }
 
     public StaticDataSourceReference(String path, PsiElement element, TextRange textRange, Project project, String objectName) {
-        this.element = element;
-        this.textRange = textRange;
+        super(element, textRange, false);
         this.project = project;
         this.path = path;
         this.objectName = objectName;
@@ -47,66 +44,46 @@ public class StaticDataSourceReference implements /*PsiPolyVariantReference*/ Ps
     }
 
     @Override @NotNull
-    public PsiElement getElement() {
-        return this.element;
-    }
-
-    @Override @NotNull
-    public TextRange getRangeInElement() {
-        return textRange;
-    }
-
-    @Override public PsiElement handleElementRename(@NotNull String newElementName)
-            throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
-    @Override public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
-    @Override public boolean isReferenceTo(@NotNull PsiElement element) {
-        return resolve() == element;
-    }
-
-    @Override @NotNull
     public Object[] getVariants() {
-        // TODO: Implement this method
-        return new Object[0];
-    }
+        XmlFile xmlFile = findXmlFile();
+        if (xmlFile != null) {
+            return getDatasourceList(xmlFile);
+        }
 
-    @Override public boolean isSoft() {
-        return false;
+        return new Object[0];
     }
 
     @Override
     @Nullable
     public PsiElement resolve() {
+        XmlFile xmlFile = findXmlFile();
+        if (xmlFile != null) {
+            return findDataSource(xmlFile);
+        }
+        return null;
+
+    }
+
+    @Override
+    @NotNull
+    public String getCanonicalText() {
+        return path;
+    }
+
+    protected XmlFile findXmlFile() {
         if (type != null) {
-            PhpIndex phpIndex = PhpIndex.getInstance(project);
+            final PhpIndex phpIndex = PhpIndex.getInstance(project);
             Collection<PhpClass> phpClasses = PhpIndexUtils.getByType(type, phpIndex);
 
-            PsiFile firstXmlPsiFile = null;
             for (PhpClass cl : phpClasses) {
                 PsiFile file = cl.getContainingFile();
                 String fileName = file.getName();
                 PsiDirectory dir = file.getContainingDirectory();
                 PsiFile xmlPsiFile = dir.findFile(fileName.replace(".php", ".xml"));
                 if (xmlPsiFile instanceof XmlFile) {
-                    XmlFile xmlFile = (XmlFile) xmlPsiFile;
-
-                    XmlTag tag = findDataSource(xmlFile);
-                    if (tag != null) {
-                        return tag;
-                    }
-                    if (firstXmlPsiFile == null) {
-                        firstXmlPsiFile = xmlPsiFile;
-                    }
+                    return (XmlFile) xmlPsiFile;
                 }
             }
-            return firstXmlPsiFile;
         }
 
         if (objectName != null) {
@@ -127,7 +104,7 @@ public class StaticDataSourceReference implements /*PsiPolyVariantReference*/ Ps
                 if (vf != null) {
                     PsiFile psiFile = PsiManager.getInstance(project).findFile(vf);
                     if (psiFile instanceof XmlFile) {
-                        return findDataSource((XmlFile)psiFile);
+                        return (XmlFile)psiFile;
                     }
                 }
             }
@@ -136,30 +113,45 @@ public class StaticDataSourceReference implements /*PsiPolyVariantReference*/ Ps
             if (baseDir != null) {
                 VirtualFile webDir = baseDir.findFileByRelativePath("web/");*/
         }
+
         return null;
-
-    }
-
-    @Override
-    @NotNull
-    public String getCanonicalText() {
-        return path;
     }
 
     protected XmlTag findDataSource(XmlFile xmlFile) {
-        XmlTag rootTag = xmlFile.getRootTag();
+        final XmlTag rootTag = xmlFile.getRootTag();
         if (rootTag != null) {
-            XmlTag dataSourcesTag = rootTag.findFirstSubTag("datasources");
+            final XmlTag dataSourcesTag = rootTag.findFirstSubTag("datasources");
             if (dataSourcesTag != null) {
-                XmlTag[] dataSourceTags = dataSourcesTag.findSubTags("datasource.orm");
-                for (XmlTag t : dataSourceTags) {
-                    String name = t.getAttributeValue("name");
-                    if (name != null && name.equals(path)) {
-                        return t;
+                final XmlTag[] tags = dataSourcesTag.getSubTags();
+
+                for (XmlTag t : tags) {
+                    if (t.getName().contains("datasource.")) {
+                        final String name = t.getAttributeValue("name");
+                        if (name != null && name.equals(path)) {
+                            return t;
+                        }
                     }
                 }
             }
         }
         return null;
+    }
+
+    protected String[] getDatasourceList(XmlFile xmlFile) {
+        final XmlTag rootTag = xmlFile.getRootTag();
+        final ArrayList<String> dataSources = new ArrayList<String>();
+        if (rootTag != null) {
+            XmlTag dataSourcesTag = rootTag.findFirstSubTag("datasources");
+            if (dataSourcesTag != null) {
+                XmlTag[] tags = dataSourcesTag.getSubTags();
+                for (XmlTag t : tags) {
+                    if (t.getName().contains("datasource.")) {
+                        String name = t.getAttributeValue("name");
+                        dataSources.add(name);
+                    }
+                }
+            }
+        }
+        return dataSources.toArray(new String[0]);
     }
 }

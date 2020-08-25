@@ -12,7 +12,7 @@ import com.jetbrains.php.lang.psi.elements.PhpExpression;
 import com.jetbrains.php.lang.psi.elements.StringLiteralExpression;
 import com.jetbrains.php.lang.psi.resolve.types.PhpType;
 import com.zenden2k.VfFrameworkIdeaPlugin.config.VfPluginSettings;
-import com.zenden2k.VfFrameworkIdeaPlugin.reference.MyReference;
+import com.zenden2k.VfFrameworkIdeaPlugin.reference.PhpObjectReference;
 import com.zenden2k.VfFrameworkIdeaPlugin.reference.PhpGuideReference;
 import com.zenden2k.VfFrameworkIdeaPlugin.reference.StaticDataSourceReference;
 import org.jetbrains.annotations.NotNull;
@@ -38,7 +38,7 @@ public class MyPsiReferenceProvider extends PsiReferenceProvider {
             String objectName = literalExpression.getContents();
 
             if (isGetObjectCall(literalExpression)) {
-                PsiReference ref = new MyReference(objectName, element, literalExpression.getValueRange(), project);
+                PsiReference ref = new PhpObjectReference(objectName, element, literalExpression.getValueRange(), project);
                 return new PsiReference[]{ref};
             } else  {
                 //  check if is getStaticDataSource call

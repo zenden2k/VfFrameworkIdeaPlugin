@@ -4,25 +4,19 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.PsiReference;
+import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class XmlGuideReference implements /*PsiPolyVariantReference*/ PsiReference {
-    protected final PsiElement element;
-    protected final TextRange textRange;
+public class XmlGuideReference extends PsiReferenceBase<PsiElement> {
     protected final Project project;
     protected final String guideName;
 
     public XmlGuideReference(String guideName, PsiElement element, TextRange textRange, Project project) {
-        this.element = element;
-        this.textRange = textRange;
+        super(element, textRange,false);
         this.project = project;
         this.guideName = guideName;
     }
@@ -33,38 +27,9 @@ public class XmlGuideReference implements /*PsiPolyVariantReference*/ PsiReferen
     }
 
     @Override @NotNull
-    public PsiElement getElement() {
-        return this.element;
-    }
-
-    @Override @NotNull
-    public TextRange getRangeInElement() {
-        return textRange;
-    }
-
-    @Override public PsiElement handleElementRename(@NotNull String newElementName)
-            throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
-    @Override public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
-    @Override public boolean isReferenceTo(@NotNull PsiElement element) {
-        return resolve() == element;
-    }
-
-    @Override @NotNull
     public Object[] getVariants() {
         // TODO: Implement this method
         return new Object[0];
-    }
-
-    @Override public boolean isSoft() {
-        return false;
     }
 
     @Override

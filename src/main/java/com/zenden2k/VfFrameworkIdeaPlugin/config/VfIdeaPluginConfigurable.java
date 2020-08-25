@@ -2,7 +2,6 @@ package com.zenden2k.VfFrameworkIdeaPlugin.config;
 
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.options.ConfigurationException;
-//import com.intellij.openapi.options.NonDefaultProjectConfigurable;
 import com.intellij.openapi.options.SearchableConfigurable;
 import com.intellij.openapi.project.Project;
 import com.zenden2k.VfFrameworkIdeaPlugin.config.ui.VfPluginSettingsForm;
@@ -52,7 +51,7 @@ public class VfIdeaPluginConfigurable implements SearchableConfigurable/*, NonDe
             boolean enableDatabaseReferences = mySettingsPane.getEnableDatabaseReferences();
             final PropertiesComponent projectProperties = PropertiesComponent.getInstance(myProject);
             projectProperties.setValue(VfPluginSettings.ENABLE_PLUGIN_KEY, enablePlugin, VfPluginSettings.getEnablePluginDefaultValue(myProject));
-            projectProperties.setValue(VfPluginSettings.ENABLE_DATABASE_REFERENCES, enableDatabaseReferences, true);
+            projectProperties.setValue(VfPluginSettings.ENABLE_DATABASE_REFERENCES, enableDatabaseReferences, VfPluginSettings.ENABLE_DATABASE_REFERENCES_DEFAULT_VALUE);
             //if (modified) {
                 //reparseProjectFiles(myProject);
             //}
@@ -63,7 +62,7 @@ public class VfIdeaPluginConfigurable implements SearchableConfigurable/*, NonDe
         if (mySettingsPane != null) {
             final PropertiesComponent projectProperties = PropertiesComponent.getInstance(myProject);
             final boolean enablePlugin = projectProperties.getBoolean(VfPluginSettings.ENABLE_PLUGIN_KEY, VfPluginSettings.getEnablePluginDefaultValue(myProject));
-            final boolean enableDatabaseReferences = projectProperties.getBoolean(VfPluginSettings.ENABLE_DATABASE_REFERENCES, true);
+            final boolean enableDatabaseReferences = projectProperties.getBoolean(VfPluginSettings.ENABLE_DATABASE_REFERENCES, VfPluginSettings.ENABLE_DATABASE_REFERENCES_DEFAULT_VALUE);
 
             mySettingsPane.setEnablePlugin(enablePlugin);
             mySettingsPane.setEnableDatabaseReferences(enableDatabaseReferences);

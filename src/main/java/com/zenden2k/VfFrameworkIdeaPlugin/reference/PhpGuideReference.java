@@ -4,13 +4,9 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.PsiReference;
+import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
-import com.intellij.util.IncorrectOperationException;
 import com.jetbrains.php.lang.psi.elements.MethodReference;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl;
@@ -18,16 +14,13 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public class PhpGuideReference implements PsiReference {
-    protected final PsiElement element;
-    protected final TextRange textRange;
+public class PhpGuideReference extends PsiReferenceBase<PsiElement> {
     protected final Project project;
     protected final String guideName;
     protected final MethodReference methodRef;
 
     public PhpGuideReference(String guideName, PsiElement element, TextRange textRange, Project project, MethodReference methodRef) {
-        this.element = element;
-        this.textRange = textRange;
+        super(element, textRange, false);
         this.project = project;
         this.guideName = guideName;
         this.methodRef = methodRef;
@@ -38,30 +31,6 @@ public class PhpGuideReference implements PsiReference {
         return getCanonicalText();
     }
 
-    @Override @NotNull
-    public PsiElement getElement() {
-        return this.element;
-    }
-
-    @Override @NotNull
-    public TextRange getRangeInElement() {
-        return textRange;
-    }
-
-    @Override public PsiElement handleElementRename(@NotNull String newElementName)
-            throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
-    @Override public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
-    @Override public boolean isReferenceTo(@NotNull PsiElement element) {
-        return resolve() == element;
-    }
 
     @Override @NotNull
     public Object[] getVariants() {
@@ -69,9 +38,6 @@ public class PhpGuideReference implements PsiReference {
         return new Object[0];
     }
 
-    @Override public boolean isSoft() {
-        return false;
-    }
 
     @Override
     @Nullable
@@ -116,5 +82,4 @@ public class PhpGuideReference implements PsiReference {
     public String getCanonicalText() {
         return guideName;
     }
-
 }

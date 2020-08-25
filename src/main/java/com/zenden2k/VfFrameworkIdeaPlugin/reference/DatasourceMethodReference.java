@@ -5,7 +5,6 @@ import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
-import com.intellij.util.IncorrectOperationException;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import org.jetbrains.annotations.NotNull;
@@ -13,16 +12,15 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
-public class DatasourceMethodReference implements /*PsiPolyVariantReference*/ PsiReference {
+public class DatasourceMethodReference extends PsiReferenceBase<PsiElement> {
     protected final PsiElement element;
-    protected final TextRange textRange;
     protected final Project project;
     protected final String path;
     protected final String objectName;
 
     public DatasourceMethodReference(@Nullable String objectName, String path, PsiElement element, TextRange textRange, Project project) {
+        super(element, textRange);
         this.element = element;
-        this.textRange = textRange;
         this.project = project;
         this.path = path;
         this.objectName = objectName;
@@ -39,28 +37,12 @@ public class DatasourceMethodReference implements /*PsiPolyVariantReference*/ Ps
     }
 
     @Override @NotNull
-    public TextRange getRangeInElement() {
-        return textRange;
-    }
-
-    @Override public PsiElement handleElementRename(@NotNull String newElementName)
-            throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
-    @Override public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
-    @Override public boolean isReferenceTo(@NotNull PsiElement element) {
-        return resolve() == element;
-    }
-
-    @Override @NotNull
     public Object[] getVariants() {
-        // TODO: Implement this method
+        PhpClass cls = findClass();
+        if (cls != null) {
+            return cls.getMethods().toArray();
+        }
+
         return new Object[0];
     }
 
@@ -71,12 +53,26 @@ public class DatasourceMethodReference implements /*PsiPolyVariantReference*/ Ps
     @Override
     @Nullable
     public PsiElement resolve() {
+        PhpClass cls = findClass();
+        if (cls != null) {
+            return cls.findMethodByName(path);
+        }
+
+        return null;
+    }
+
+    @Override
+    @NotNull
+    public String getCanonicalText() {
+        return path;
+    }
+
+    protected PhpClass findClass() {
         PsiFile phpFile = null;
         String fileName = "";
         if (objectName == null) {
-            PsiFile file = element.getContainingFile();
+            PsiFile file = element.getContainingFile().getOriginalFile();
             fileName = file.getName();
-
             PsiDirectory dir = file.getContainingDirectory();
             if (dir != null) {
                 phpFile = dir.findFile(fileName.replace(".xml", ".php"));
@@ -105,7 +101,7 @@ public class DatasourceMethodReference implements /*PsiPolyVariantReference*/ Ps
 
         if (phpFile != null) {
             String fileNameNoExt = fileName;
-            int pos = fileNameNoExt.lastIndexOf("");
+            int pos = fileNameNoExt.lastIndexOf(".");
             if (pos > 0 && pos < (fileNameNoExt.length() - 1)) {
                 fileNameNoExt = fileNameNoExt.substring(0, pos);
             }
@@ -113,37 +109,10 @@ public class DatasourceMethodReference implements /*PsiPolyVariantReference*/ Ps
 
             for (PhpClass el : classes) {
                 if (el.getContainingFile() == phpFile) {
-                    return el.findMethodByName(path);
-                }
-            }
-        }
-
-        /*String expression = path;
-        int delimiterPos = expression.indexOf(':');
-        if (delimiterPos == -1) {
-            Collection<PhpClass> classes = PhpIndex.getInstance(project).getClassesByFQN("\\C" + expression);
-            if (!classes.isEmpty()) {
-                return classes.iterator().next();
-            }
-        } else {
-            String path = expression.substring(0, delimiterPos);
-            String objectName = expression.substring(delimiterPos + 1);
-            Collection<PhpClass> res = PhpIndex.getInstance(project).getClassesByFQN("\\C" + objectName);
-            for (PhpNamedElement el : res) {
-                String filePath = el.getContainingFile().getContainingDirectory().getVirtualFile().getPath();
-                if (filePath.contains(path)) {
                     return el;
                 }
             }
-        }*/
-
+        }
         return null;
     }
-
-    @Override
-    @NotNull
-    public String getCanonicalText() {
-        return path;
-    }
-
 }

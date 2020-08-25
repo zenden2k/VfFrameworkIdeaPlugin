@@ -12,15 +12,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
-public class MyReference implements /*PsiPolyVariantReference*/ PsiReference {
-    protected final PsiElement element;
-    protected final TextRange textRange;
+public class PhpObjectReference extends PsiReferenceBase<PsiElement>  {
     protected final Project project;
     protected final String path;
 
-    public MyReference(String path, PsiElement element, TextRange textRange, Project project) {
-        this.element = element;
-        this.textRange = textRange;
+    public PhpObjectReference(String path, PsiElement element, TextRange textRange, Project project) {
+        super(element, textRange, false);
         this.project = project;
         this.path = path;
     }
@@ -30,29 +27,11 @@ public class MyReference implements /*PsiPolyVariantReference*/ PsiReference {
         return getCanonicalText();
     }
 
-    @Override @NotNull
-    public PsiElement getElement() {
-        return this.element;
-    }
-
-    @Override @NotNull
-    public TextRange getRangeInElement() {
-        return textRange;
-    }
 
     @Override public PsiElement handleElementRename(@NotNull String newElementName)
             throws IncorrectOperationException {
         // TODO: Implement this method
         throw new IncorrectOperationException();
-    }
-
-    @Override public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
-    @Override public boolean isReferenceTo(@NotNull PsiElement element) {
-        return resolve() == element;
     }
 
     @Override @NotNull
@@ -61,8 +40,9 @@ public class MyReference implements /*PsiPolyVariantReference*/ PsiReference {
         return new Object[0];
     }
 
-    @Override public boolean isSoft() {
-        return false;
+    @Override
+    public boolean isReferenceTo(@NotNull PsiElement element) {
+        return super.isReferenceTo(element);
     }
 
     @Override
@@ -79,7 +59,7 @@ public class MyReference implements /*PsiPolyVariantReference*/ PsiReference {
             String path = expression.substring(0, delimiterPos);
             String objectName = expression.substring(delimiterPos + 1);
             Collection<PhpClass> res = PhpIndex.getInstance(project).getClassesByFQN("\\C" + objectName);
-            for (PhpNamedElement el : res) {
+            for (PhpClass el : res) {
                 String filePath = el.getContainingFile().getContainingDirectory().getVirtualFile().getPath();
                 if (filePath.contains(path)) {
                     return el;

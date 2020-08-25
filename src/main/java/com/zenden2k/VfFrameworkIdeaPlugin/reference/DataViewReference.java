@@ -7,22 +7,20 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.PsiReference;
+import com.intellij.psi.PsiReferenceBase;
 import com.intellij.util.IncorrectOperationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 
-public class DataViewReference implements PsiReference {
-    protected final PsiElement element;
-    protected final TextRange textRange;
+public class DataViewReference extends PsiReferenceBase<PsiElement> {
     protected final Project project;
     protected final String viewName;
     protected final String objectName;
     protected final String directoryName;
 
     public DataViewReference(String viewName, String objectName, PsiElement element, TextRange textRange, Project project) {
-        this.element = element;
-        this.textRange = textRange;
+        super(element, textRange, false);
         this.project = project;
         this.viewName = viewName;
         this.objectName = objectName;
@@ -41,27 +39,6 @@ public class DataViewReference implements PsiReference {
         return getCanonicalText();
     }
 
-    @Override @NotNull
-    public PsiElement getElement() {
-        return this.element;
-    }
-
-    @Override @NotNull
-    public TextRange getRangeInElement() {
-        return textRange;
-    }
-
-    @Override public PsiElement handleElementRename(@NotNull String newElementName)
-            throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
-    @Override public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
     @Override public boolean isReferenceTo(@NotNull PsiElement element) {
         return resolve() == element;
     }
@@ -70,10 +47,6 @@ public class DataViewReference implements PsiReference {
     public Object[] getVariants() {
         // TODO: Implement this method
         return new Object[0];
-    }
-
-    @Override public boolean isSoft() {
-        return false;
     }
 
     @Override

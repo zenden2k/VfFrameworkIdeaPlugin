@@ -37,7 +37,7 @@ public class XmlReferenceProvider extends PsiReferenceProvider {
             return PsiReference.EMPTY_ARRAY;
         }
 
-        final boolean enableDataBaseReferences = projectProperties.getBoolean(VfPluginSettings.ENABLE_DATABASE_REFERENCES, true);
+        final boolean enableDataBaseReferences = projectProperties.getBoolean(VfPluginSettings.ENABLE_DATABASE_REFERENCES, VfPluginSettings.ENABLE_DATABASE_REFERENCES_DEFAULT_VALUE);
 
         if (element instanceof XmlAttributeValue) {
             XmlAttributeValue xmlAttrValue = (XmlAttributeValue)element;
