@@ -52,7 +52,7 @@ public class DatabaseUtils {
         for (DbDataSource source : dataSources) {
             for(DasObject obj : source.getModel().getModelRoots()){
                 if (obj instanceof BasicSchema) {
-                    BasicSchema schema = (BasicSchema)obj;
+                    final BasicSchema schema = (BasicSchema)obj;
                     if (schema.getName().equals(schemaName)) {
                         return facade.findElement(schema);
                     }

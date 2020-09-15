@@ -7,7 +7,6 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
-import com.intellij.util.IncorrectOperationException;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.*;
 import com.jetbrains.php.lang.psi.resolve.types.PhpType;
@@ -36,11 +35,6 @@ public class StaticDataSourceReference extends PsiReferenceBase<PsiElement> {
         this.project = project;
         this.path = path;
         this.objectName = objectName;
-    }
-
-    @Override
-    public String toString() {
-        return getCanonicalText();
     }
 
     @Override @NotNull

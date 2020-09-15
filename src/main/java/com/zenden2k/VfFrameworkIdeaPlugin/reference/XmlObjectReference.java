@@ -21,11 +21,6 @@ public class XmlObjectReference extends PsiReferenceBase<PsiElement> {
         this.objectName = objectName;
     }
 
-    @Override
-    public String toString() {
-        return getCanonicalText();
-    }
-
     @Override @NotNull
     public Object[] getVariants() {
         // TODO: Implement this method
@@ -36,9 +31,9 @@ public class XmlObjectReference extends PsiReferenceBase<PsiElement> {
     @Nullable
     public PsiElement resolve() {
         if (objectName != null) {
-            VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
+            final VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
             if (vFiles.length != 0 ) {
-                int delimPos = objectName.indexOf(":");
+                final int delimPos = objectName.indexOf(":");
                 String xmlFileName;
                 String directoryName;
                 if (delimPos != -1) {
@@ -49,13 +44,13 @@ public class XmlObjectReference extends PsiReferenceBase<PsiElement> {
                     xmlFileName = objectName;
                 }
 
-                VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/vf_controllers/" + directoryName + "/" + xmlFileName + ".xml");
+                final VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/vf_controllers/" + directoryName + "/" + xmlFileName + ".xml");
                 if (vf != null) {
 
-                    PsiFile psiFile = PsiManager.getInstance(project).findFile(vf);
+                    final PsiFile psiFile = PsiManager.getInstance(project).findFile(vf);
                     if (psiFile instanceof XmlFile) {
 
-                        XmlFile xmlFile = (XmlFile)psiFile;
+                        final XmlFile xmlFile = (XmlFile)psiFile;
                         /*DomManager manager = DomManager.getDomManager(project);
                         DomFileElement<Object> el = manager.getFileElement(xmlFile, Object.class);
                         if(el!=null) {
@@ -71,7 +66,7 @@ public class XmlObjectReference extends PsiReferenceBase<PsiElement> {
                         }*/
 
                         //Fields f = el.getFields();
-                        XmlTag tag = xmlFile.getRootTag();
+                        final XmlTag tag = xmlFile.getRootTag();
                         if (tag != null) {
                             return tag;
                         }

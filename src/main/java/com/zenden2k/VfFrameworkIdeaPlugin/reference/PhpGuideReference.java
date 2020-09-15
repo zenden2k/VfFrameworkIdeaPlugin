@@ -10,6 +10,7 @@ import com.intellij.psi.xml.XmlTag;
 import com.jetbrains.php.lang.psi.elements.MethodReference;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
 import com.jetbrains.php.lang.psi.elements.impl.MethodImpl;
+import com.zenden2k.VfFrameworkIdeaPlugin.utils.AutocompleteHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -26,28 +27,21 @@ public class PhpGuideReference extends PsiReferenceBase<PsiElement> {
         this.methodRef = methodRef;
     }
 
-    @Override
-    public String toString() {
-        return getCanonicalText();
-    }
-
-
     @Override @NotNull
     public Object[] getVariants() {
-        // TODO: Implement this method
-        return new Object[0];
+        return AutocompleteHelper.getGuideList(this.project).toArray();
     }
 
 
     @Override
     @Nullable
     public PsiElement resolve() {
-        PsiElement res = methodRef.resolve();
+        final PsiElement res = methodRef.resolve();
         if (!(res instanceof MethodImpl)) {
             return null;
         }
-        MethodImpl methodImpl = (MethodImpl)res;
-        PhpClass cls = methodImpl.getContainingClass();
+        final MethodImpl methodImpl = (MethodImpl)res;
+        final PhpClass cls = methodImpl.getContainingClass();
         if (cls == null) {
             return null;
         }
@@ -56,17 +50,19 @@ public class PhpGuideReference extends PsiReferenceBase<PsiElement> {
             return null;
         }
 
-        VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
+        final VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
+
         if (vFiles.length != 0) {
-            VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/guide/" + guideName.toLowerCase() + ".xml");
+            final String guideNameLower = guideName.toLowerCase();
+            VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/guide/" + guideNameLower + ".xml");
             if (vf == null) {
-                vFiles[0].findFileByRelativePath("system/application/guide/" + guideName.toLowerCase() + ".php");
+                vf = vFiles[0].findFileByRelativePath("system/application/guide/" + guideNameLower + ".php");
             }
             if (vf != null) {
-                PsiFile psiFile = PsiManager.getInstance(project).findFile(vf);
+                final PsiFile psiFile = PsiManager.getInstance(project).findFile(vf);
                 if (psiFile instanceof XmlFile) {
-                    XmlFile xmlFile = (XmlFile) psiFile;
-                    XmlTag tag = xmlFile.getRootTag();
+                    final XmlFile xmlFile = (XmlFile) psiFile;
+                    final XmlTag tag = xmlFile.getRootTag();
                     if (tag != null) {
                         return tag;
                     }

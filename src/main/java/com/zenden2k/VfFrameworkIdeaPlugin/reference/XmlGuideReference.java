@@ -8,6 +8,7 @@ import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.IncorrectOperationException;
+import com.zenden2k.VfFrameworkIdeaPlugin.utils.AutocompleteHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -21,15 +22,9 @@ public class XmlGuideReference extends PsiReferenceBase<PsiElement> {
         this.guideName = guideName;
     }
 
-    @Override
-    public String toString() {
-        return getCanonicalText();
-    }
-
     @Override @NotNull
     public Object[] getVariants() {
-        // TODO: Implement this method
-        return new Object[0];
+        return AutocompleteHelper.getGuideList(this.project).toArray();
     }
 
     @Override
@@ -37,9 +32,10 @@ public class XmlGuideReference extends PsiReferenceBase<PsiElement> {
     public PsiElement resolve() {
         VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
         if (vFiles.length != 0) {
-            VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/guide/" + guideName.toLowerCase() + ".xml");
+            final String guideNameLower = guideName.toLowerCase();
+            VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/guide/" + guideNameLower + ".xml");
             if (vf == null) {
-                vf = vFiles[0].findFileByRelativePath("system/application/guide/" + guideName.toLowerCase() + ".php");
+                vf = vFiles[0].findFileByRelativePath("system/application/guide/" + guideNameLower + ".php");
             }
             if (vf != null) {
                 PsiFile psiFile = PsiManager.getInstance(project).findFile(vf);

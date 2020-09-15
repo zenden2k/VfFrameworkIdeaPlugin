@@ -74,7 +74,7 @@ public class FactoryTypeProvider /*extends CompletionContributor*/ implements Ph
             for(PhpNamedElement el: res) {
                 String filePath = el.getContainingFile().getContainingDirectory().getVirtualFile().getPath();
                 if(filePath.contains(path)) {
-                    return Arrays.asList(el);
+                    return Collections.singletonList(el);
                 }
             }
             return res;

@@ -4,17 +4,15 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiFile;
-import com.intellij.psi.PsiManager;
-import com.intellij.psi.PsiReference;
+import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
-import com.intellij.util.IncorrectOperationException;
+import com.zenden2k.VfFrameworkIdeaPlugin.utils.AutocompleteHelper;
+import groovyjarjarpicocli.AutoComplete;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class XmlFormReference implements /*PsiPolyVariantReference*/ PsiReference {
+public class XmlFormReference extends PsiReferenceBase<PsiElement> {
     protected final PsiElement element;
     protected final TextRange textRange;
     protected final Project project;
@@ -22,6 +20,7 @@ public class XmlFormReference implements /*PsiPolyVariantReference*/ PsiReferenc
     protected final String formName;
 
     public XmlFormReference(String moduleName, String formName, PsiElement element, TextRange textRange, Project project) {
+        super(element, textRange, false);
         this.element = element;
         this.textRange = textRange;
         this.project = project;
@@ -29,44 +28,9 @@ public class XmlFormReference implements /*PsiPolyVariantReference*/ PsiReferenc
         this.formName = formName;
     }
 
-    @Override
-    public String toString() {
-        return getCanonicalText();
-    }
-
-    @Override @NotNull
-    public PsiElement getElement() {
-        return this.element;
-    }
-
-    @Override @NotNull
-    public TextRange getRangeInElement() {
-        return textRange;
-    }
-
-    @Override public PsiElement handleElementRename(@NotNull String newElementName)
-            throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
-    @Override public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
-    @Override public boolean isReferenceTo(@NotNull PsiElement element) {
-        return resolve() == element;
-    }
-
     @Override @NotNull
     public Object[] getVariants() {
-        // TODO: Implement this method
-        return new Object[0];
-    }
-
-    @Override public boolean isSoft() {
-        return false;
+        return AutocompleteHelper.getFormList(project, moduleName).toArray();
     }
 
     @Override
@@ -95,5 +59,4 @@ public class XmlFormReference implements /*PsiPolyVariantReference*/ PsiReferenc
     public String getCanonicalText() {
         return formName;
     }
-
 }

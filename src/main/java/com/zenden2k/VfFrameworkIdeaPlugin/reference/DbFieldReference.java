@@ -6,14 +6,14 @@ import com.intellij.database.psi.DbPsiFacade;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
 import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiReference;
-import com.intellij.util.IncorrectOperationException;
+import com.intellij.psi.PsiReferenceBase;
+
 import com.zenden2k.VfFrameworkIdeaPlugin.utils.DatabaseUtils;
 import com.zenden2k.VfFrameworkIdeaPlugin.utils.DbTableNameInfo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class DbFieldReference implements /*PsiPolyVariantReference*/ PsiReference {
+public class DbFieldReference extends PsiReferenceBase<PsiElement> {
     protected final PsiElement element;
     protected final TextRange textRange;
     protected final Project project;
@@ -21,41 +21,12 @@ public class DbFieldReference implements /*PsiPolyVariantReference*/ PsiReferenc
     protected final String table;
 
     public DbFieldReference(String path, String table, PsiElement element, TextRange textRange, Project project) {
+        super(element, textRange, true);
         this.element = element;
         this.textRange = textRange;
         this.project = project;
         this.path = path;
         this.table = table;
-    }
-
-    @Override
-    public String toString() {
-        return getCanonicalText();
-    }
-
-    @Override @NotNull
-    public PsiElement getElement() {
-        return this.element;
-    }
-
-    @Override @NotNull
-    public TextRange getRangeInElement() {
-        return textRange;
-    }
-
-    @Override public PsiElement handleElementRename(@NotNull String newElementName)
-            throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
-    @Override public PsiElement bindToElement(@NotNull PsiElement element) throws IncorrectOperationException {
-        // TODO: Implement this method
-        throw new IncorrectOperationException();
-    }
-
-    @Override public boolean isReferenceTo(@NotNull PsiElement element) {
-        return resolve() == element;
     }
 
     @Override @NotNull
@@ -94,5 +65,4 @@ public class DbFieldReference implements /*PsiPolyVariantReference*/ PsiReferenc
     public String getCanonicalText() {
         return path;
     }
-
 }

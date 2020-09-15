@@ -92,7 +92,6 @@ public class MyPsiReferenceProvider extends PsiReferenceProvider {
             final FunctionReference funcRef = (FunctionReference) prevEl;
             final String funcName = funcRef.getName();
             return funcName != null && funcRef.getName().toLowerCase().equals("getobject");
-
         }
         return false;
     }

@@ -34,15 +34,6 @@ public class DataViewReference extends PsiReferenceBase<PsiElement> {
         }
     }
 
-    @Override
-    public String toString() {
-        return getCanonicalText();
-    }
-
-    @Override public boolean isReferenceTo(@NotNull PsiElement element) {
-        return resolve() == element;
-    }
-
     @Override @NotNull
     public Object[] getVariants() {
         // TODO: Implement this method

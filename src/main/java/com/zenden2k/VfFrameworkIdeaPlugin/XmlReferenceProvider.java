@@ -3,6 +3,7 @@ package com.zenden2k.VfFrameworkIdeaPlugin;
 import com.intellij.ide.util.PropertiesComponent;
 import com.intellij.openapi.project.Project;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.css.resolve.HtmlCssClassOrIdReference;
 import com.intellij.psi.xml.XmlAttribute;
@@ -23,7 +24,7 @@ public class XmlReferenceProvider extends PsiReferenceProvider {
 
     public XmlReferenceProvider() {
         this.pattern = Pattern.compile("\\S+");
-        pattern2 = Pattern.compile("system/application/vf_controllers/([^/]+)/");
+        this.pattern2 = Pattern.compile("system/application/vf_controllers/([^/]+)/");
     }
 
     @NotNull
@@ -40,9 +41,9 @@ public class XmlReferenceProvider extends PsiReferenceProvider {
         final boolean enableDataBaseReferences = projectProperties.getBoolean(VfPluginSettings.ENABLE_DATABASE_REFERENCES, VfPluginSettings.ENABLE_DATABASE_REFERENCES_DEFAULT_VALUE);
 
         if (element instanceof XmlAttributeValue) {
-            XmlAttributeValue xmlAttrValue = (XmlAttributeValue)element;
-            PsiElement parentEl = xmlAttrValue.getParent();
-            String attrValue = xmlAttrValue.getValue();
+            final XmlAttributeValue xmlAttrValue = (XmlAttributeValue)element;
+            final PsiElement parentEl = xmlAttrValue.getParent();
+            final String attrValue = xmlAttrValue.getValue();
             if (parentEl instanceof XmlAttribute) {
                 XmlAttribute xmlAttr = (XmlAttribute)parentEl;
                 String name = xmlAttr.getName();
@@ -118,13 +119,20 @@ public class XmlReferenceProvider extends PsiReferenceProvider {
                         return new PsiReference[]{ref};
                     }
                 } else if (name.equals("view") && parentName.equals("field")) {
-                    String path = xmlAttrValue.getContainingFile().getVirtualFile().getPath();
-                    Matcher matcher = pattern2.matcher(path);
-                    if (matcher.find()) {
-                        String objectName = matcher.group(1);
-                        PsiReference ref = new DataViewReference(xmlAttrValue.getValue(), objectName, element, getTextRange(xmlAttrValue), project);
-                        return new PsiReference[]{ref};
+                    PsiFile file = xmlAttrValue.getContainingFile();
+                    if (file != null) {
+                        VirtualFile vf = file.getVirtualFile();
+                        if (vf!= null) {
+                            String path = vf.getPath();
+                            Matcher matcher = pattern2.matcher(path);
+                            if (matcher.find()) {
+                                String objectName = matcher.group(1);
+                                PsiReference ref = new DataViewReference(xmlAttrValue.getValue(), objectName, element, getTextRange(xmlAttrValue), project);
+                                return new PsiReference[]{ref};
+                            }
+                        }
                     }
+
 
                 } else if (name.equals("class")) {
                     String value = xmlAttrValue.getValue();
@@ -137,7 +145,7 @@ public class XmlReferenceProvider extends PsiReferenceProvider {
                                 range.getStartOffset() + matcher.end(), true, true);
                         referenceList.add(ref);
                     }
-                    return referenceList.toArray(new PsiReference[referenceList.size()]);
+                    return referenceList.toArray(new PsiReference[0]);
                 } else if (enableDataBaseReferences && name.equals("table") && parentName.equals("object")) {
                     // Reference to database table
                     // TODO: use DbTableNameInfo class
@@ -157,10 +165,7 @@ public class XmlReferenceProvider extends PsiReferenceProvider {
                             int offset = schemaName.length()+1;
                             PsiReference tableRef = new DbTableReference(tableName, schemaName, element, new TextRange(range.getStartOffset()+offset, range.getStartOffset() + offset + tableName.length()) , project);
                             PsiReference schemaRef = new DbSchemaReference(schemaName, element, new TextRange(range.getStartOffset(), range.getStartOffset() + schemaName.length()) , project);
-                            PsiReference[] refs = new PsiReference[2];
-                            refs[0] = schemaRef;
-                            refs[1] = tableRef;
-                            return refs;
+                            return new PsiReference[] {tableRef, schemaRef};
                         } else {
                             PsiReference ref = new DbTableReference(tableName, schemaName, element, new TextRange(range.getStartOffset(), range.getStartOffset() + fullTableName.length()) , project);
                             return new PsiReference[]{ref};

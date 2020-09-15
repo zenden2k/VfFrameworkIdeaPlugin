@@ -6,7 +6,6 @@ import com.intellij.psi.*;
 import com.intellij.util.IncorrectOperationException;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
-import com.jetbrains.php.lang.psi.elements.PhpNamedElement;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,12 +21,6 @@ public class PhpObjectReference extends PsiReferenceBase<PsiElement>  {
         this.path = path;
     }
 
-    @Override
-    public String toString() {
-        return getCanonicalText();
-    }
-
-
     @Override public PsiElement handleElementRename(@NotNull String newElementName)
             throws IncorrectOperationException {
         // TODO: Implement this method
@@ -38,11 +31,6 @@ public class PhpObjectReference extends PsiReferenceBase<PsiElement>  {
     public Object[] getVariants() {
         // TODO: Implement this method
         return new Object[0];
-    }
-
-    @Override
-    public boolean isReferenceTo(@NotNull PsiElement element) {
-        return super.isReferenceTo(element);
     }
 
     @Override

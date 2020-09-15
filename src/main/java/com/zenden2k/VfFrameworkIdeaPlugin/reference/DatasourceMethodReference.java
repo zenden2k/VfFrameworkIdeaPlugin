@@ -19,35 +19,22 @@ public class DatasourceMethodReference extends PsiReferenceBase<PsiElement> {
     protected final String objectName;
 
     public DatasourceMethodReference(@Nullable String objectName, String path, PsiElement element, TextRange textRange, Project project) {
-        super(element, textRange);
+        super(element, textRange, false);
         this.element = element;
         this.project = project;
         this.path = path;
         this.objectName = objectName;
     }
 
-    @Override
-    public String toString() {
-        return getCanonicalText();
-    }
-
-    @Override @NotNull
-    public PsiElement getElement() {
-        return this.element;
-    }
-
     @Override @NotNull
     public Object[] getVariants() {
         PhpClass cls = findClass();
         if (cls != null) {
-            return cls.getMethods().toArray();
+            // Filtering out php magic methods
+            return cls.getMethods().stream().filter(m -> !m.getName().startsWith("__")).toArray();
         }
 
         return new Object[0];
-    }
-
-    @Override public boolean isSoft() {
-        return false;
     }
 
     @Override

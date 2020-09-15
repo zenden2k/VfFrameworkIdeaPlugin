@@ -32,7 +32,7 @@ public class DbTableNameInfo {
                 // Provide reference for db schema and table separately
                 schemaName = tokens2[0];
                 tableName = tokens2[1];
-                int offset = schemaName.length() + 1;
+                final int offset = schemaName.length() + 1;
                 tableNameRange = new TextRange(offset, offset + tableName.length());
                 schemaNameRange = new TextRange(0, schemaName.length());
             } else {
