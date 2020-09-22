@@ -71,4 +71,24 @@ public class AutocompleteHelper {
         }
         return result;
     }
+
+    public static Collection<String> getDataViewList(Project project, @NotNull String moduleName) {
+        ArrayList<String> result = new ArrayList<>();
+        if (moduleName.isEmpty()) {
+            return result;
+        }
+        final VirtualFile[] vFiles = ProjectRootManager.getInstance(project).getContentRoots();
+        if (vFiles.length != 0) {
+            final VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/vf_controllers/" + moduleName + "/views/dataview");
+            if (vf != null && vf.isDirectory()) {
+                for(VirtualFile child: vf.getChildren()) {
+                    final String name = child.getName();
+                    if (name.endsWith(".tpl")) {
+                        result.add(Files.getNameWithoutExtension(child.getName()));
+                    }
+                }
+            }
+        }
+        return result;
+    }
 }

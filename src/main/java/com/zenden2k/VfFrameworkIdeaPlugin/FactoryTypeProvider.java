@@ -32,7 +32,7 @@ public class FactoryTypeProvider /*extends CompletionContributor*/ implements Ph
             final FunctionReference funcRef = (FunctionReference)e;
             final String funcName = funcRef.getName();
             if (funcName != null) {
-                if (funcName.toLowerCase().equals("getobject")) {
+                if (funcName.toLowerCase(Locale.ROOT).equals("getobject")) {
                     final PsiElement[] parameters = funcRef.getParameters();
                     if (parameters.length > 0) {
                         PsiElement parameter = parameters[0];
@@ -44,7 +44,7 @@ public class FactoryTypeProvider /*extends CompletionContributor*/ implements Ph
                             }
                         }
                     }
-                } else if (funcName.toLowerCase().equals("get_instance")) {
+                } else if (funcName.toLowerCase(Locale.ROOT).equals("get_instance")) {
                     return new PhpType().add("#" + getKey() + "\\Vf");
                 }
             }

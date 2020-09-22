@@ -8,9 +8,10 @@ import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
 import com.zenden2k.VfFrameworkIdeaPlugin.utils.AutocompleteHelper;
-import groovyjarjarpicocli.AutoComplete;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Locale;
 
 public class XmlFormReference extends PsiReferenceBase<PsiElement> {
     protected final PsiElement element;
@@ -36,14 +37,14 @@ public class XmlFormReference extends PsiReferenceBase<PsiElement> {
     @Override
     @Nullable
     public PsiElement resolve() {
-        VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
+        final VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
         if (vFiles.length != 0) {
-            VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/vf_controllers/" + moduleName + "/forms/" + formName.toLowerCase() + ".xml");
+            final VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/vf_controllers/" + moduleName + "/forms/" + formName.toLowerCase(Locale.ROOT) + ".xml");
             if (vf != null) {
-                PsiFile psiFile = PsiManager.getInstance(project).findFile(vf);
+                final PsiFile psiFile = PsiManager.getInstance(project).findFile(vf);
                 if (psiFile instanceof XmlFile) {
-                    XmlFile xmlFile = (XmlFile) psiFile;
-                    XmlTag tag = xmlFile.getRootTag();
+                    final XmlFile xmlFile = (XmlFile) psiFile;
+                    final XmlTag tag = xmlFile.getRootTag();
                     if (tag != null) {
                         return tag;
                     }

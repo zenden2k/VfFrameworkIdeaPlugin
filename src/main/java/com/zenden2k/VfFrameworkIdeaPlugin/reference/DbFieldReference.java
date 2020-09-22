@@ -35,14 +35,11 @@ public class DbFieldReference extends PsiReferenceBase<PsiElement> {
         return new Object[0];
     }
 
-    @Override public boolean isSoft() {
-        return true;
-    }
 
     @Override
     @Nullable
     public PsiElement resolve() {
-        DbTableNameInfo info = DbTableNameInfo.createFromString(table);
+        final DbTableNameInfo info = DbTableNameInfo.createFromString(table);
         if (info == null) {
             return null;
         }
@@ -50,7 +47,7 @@ public class DbFieldReference extends PsiReferenceBase<PsiElement> {
         if (tbl == null) {
             return null;
         }
-        for(BasicTableOrViewColumn column: tbl.getColumns()) {
+        for (BasicTableOrViewColumn column : tbl.getColumns()) {
             if (column.getName().equals(path)) {
                 DbPsiFacade facade = DbPsiFacade.getInstance(project);
                 return facade.findElement(column);

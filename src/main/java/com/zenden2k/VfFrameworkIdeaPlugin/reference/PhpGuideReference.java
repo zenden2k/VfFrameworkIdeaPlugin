@@ -14,6 +14,8 @@ import com.zenden2k.VfFrameworkIdeaPlugin.utils.AutocompleteHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Locale;
+
 
 public class PhpGuideReference extends PsiReferenceBase<PsiElement> {
     protected final Project project;
@@ -53,7 +55,7 @@ public class PhpGuideReference extends PsiReferenceBase<PsiElement> {
         final VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
 
         if (vFiles.length != 0) {
-            final String guideNameLower = guideName.toLowerCase();
+            final String guideNameLower = guideName.toLowerCase(Locale.ROOT);
             VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/guide/" + guideNameLower + ".xml");
             if (vf == null) {
                 vf = vFiles[0].findFileByRelativePath("system/application/guide/" + guideNameLower + ".php");

@@ -17,6 +17,8 @@ import com.zenden2k.VfFrameworkIdeaPlugin.reference.PhpGuideReference;
 import com.zenden2k.VfFrameworkIdeaPlugin.reference.StaticDataSourceReference;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Locale;
+
 public class MyPsiReferenceProvider extends PsiReferenceProvider {
 
     public MyPsiReferenceProvider() {
@@ -34,11 +36,11 @@ public class MyPsiReferenceProvider extends PsiReferenceProvider {
         }
 
         if (element instanceof StringLiteralExpression) {
-            StringLiteralExpression literalExpression = (StringLiteralExpression)element;
-            String objectName = literalExpression.getContents();
+            final StringLiteralExpression literalExpression = (StringLiteralExpression)element;
+            final String objectName = literalExpression.getContents();
 
             if (isGetObjectCall(literalExpression)) {
-                PsiReference ref = new PhpObjectReference(objectName, element, literalExpression.getValueRange(), project);
+                final PsiReference ref = new PhpObjectReference(objectName, element, literalExpression.getValueRange(), project);
                 return new PsiReference[]{ref};
             } else  {
                 //  check if is getStaticDataSource call
@@ -49,15 +51,15 @@ public class MyPsiReferenceProvider extends PsiReferenceProvider {
                 prevEl = prevEl.getParent();
 
                 if (prevEl instanceof MethodReference) {
-                    MethodReference methodRef = (MethodReference)prevEl;
-                    PsiElement[] parameters = methodRef.getParameters();
+                    final MethodReference methodRef = (MethodReference)prevEl;
+                    final PsiElement[] parameters = methodRef.getParameters();
                     // Check if it is first argument
                     if (parameters.length !=0 && parameters[0] == literalExpression) {
-                        String methodName = methodRef.getName();
+                        final String methodName = methodRef.getName();
                         if (methodName!= null) {
-                            String methodNameLower = methodName.toLowerCase();
+                            final String methodNameLower = methodName.toLowerCase(Locale.ROOT);
                             if (methodNameLower.equals("getstaticdatasource")) {
-                                PhpExpression classRef = methodRef.getClassReference();
+                                final PhpExpression classRef = methodRef.getClassReference();
                                 if (classRef != null) {
                                     PhpType type = classRef.getType();
                                     PsiReference ref = new StaticDataSourceReference(objectName, element, literalExpression.getValueRange(), project, type);
@@ -68,7 +70,7 @@ public class MyPsiReferenceProvider extends PsiReferenceProvider {
                                     || methodNameLower.equals("getassociativevalue")
                                     || methodNameLower.equals("getassociativeobject"
                             )) {
-                                PsiReference ref = new PhpGuideReference(objectName, element, literalExpression.getValueRange(), project, methodRef);
+                                final PsiReference ref = new PhpGuideReference(objectName, element, literalExpression.getValueRange(), project, methodRef);
                                 return new PsiReference[]{ref};
                             }
                         }
@@ -91,7 +93,7 @@ public class MyPsiReferenceProvider extends PsiReferenceProvider {
         if (prevEl instanceof FunctionReference && !(prevEl instanceof MethodReference)) {
             final FunctionReference funcRef = (FunctionReference) prevEl;
             final String funcName = funcRef.getName();
-            return funcName != null && funcRef.getName().toLowerCase().equals("getobject");
+            return funcName != null && funcRef.getName().toLowerCase(Locale.ROOT).equals("getobject");
         }
         return false;
     }

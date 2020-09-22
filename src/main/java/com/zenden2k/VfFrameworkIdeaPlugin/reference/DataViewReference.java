@@ -6,9 +6,8 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiManager;
-import com.intellij.psi.PsiReference;
 import com.intellij.psi.PsiReferenceBase;
-import com.intellij.util.IncorrectOperationException;
+import com.zenden2k.VfFrameworkIdeaPlugin.utils.AutocompleteHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -36,8 +35,7 @@ public class DataViewReference extends PsiReferenceBase<PsiElement> {
 
     @Override @NotNull
     public Object[] getVariants() {
-        // TODO: Implement this method
-        return new Object[0];
+        return AutocompleteHelper.getDataViewList(this.project, directoryName).toArray();
     }
 
     @Override

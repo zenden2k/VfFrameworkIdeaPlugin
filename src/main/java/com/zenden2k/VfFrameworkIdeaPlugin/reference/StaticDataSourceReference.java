@@ -39,7 +39,7 @@ public class StaticDataSourceReference extends PsiReferenceBase<PsiElement> {
 
     @Override @NotNull
     public Object[] getVariants() {
-        XmlFile xmlFile = findXmlFile();
+        final XmlFile xmlFile = findXmlFile();
         if (xmlFile != null) {
             return getDatasourceList(xmlFile);
         }
@@ -50,12 +50,11 @@ public class StaticDataSourceReference extends PsiReferenceBase<PsiElement> {
     @Override
     @Nullable
     public PsiElement resolve() {
-        XmlFile xmlFile = findXmlFile();
+        final XmlFile xmlFile = findXmlFile();
         if (xmlFile != null) {
             return findDataSource(xmlFile);
         }
         return null;
-
     }
 
     @Override
@@ -67,7 +66,7 @@ public class StaticDataSourceReference extends PsiReferenceBase<PsiElement> {
     protected XmlFile findXmlFile() {
         if (type != null) {
             final PhpIndex phpIndex = PhpIndex.getInstance(project);
-            Collection<PhpClass> phpClasses = PhpIndexUtils.getByType(type, phpIndex);
+            final Collection<PhpClass> phpClasses = PhpIndexUtils.getByType(type, phpIndex);
 
             for (PhpClass cl : phpClasses) {
                 PsiFile file = cl.getContainingFile();
@@ -81,7 +80,7 @@ public class StaticDataSourceReference extends PsiReferenceBase<PsiElement> {
         }
 
         if (objectName != null) {
-            VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
+            final VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
             if (vFiles.length != 0 ) {
                 int delimPos = objectName.indexOf(":");
                 String xmlFileName;
@@ -94,7 +93,7 @@ public class StaticDataSourceReference extends PsiReferenceBase<PsiElement> {
                     xmlFileName = objectName;
                 }
 
-                VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/vf_controllers/" + directoryName + "/" + xmlFileName + ".xml");
+                final VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/vf_controllers/" + directoryName + "/" + xmlFileName + ".xml");
                 if (vf != null) {
                     PsiFile psiFile = PsiManager.getInstance(project).findFile(vf);
                     if (psiFile instanceof XmlFile) {
@@ -102,10 +101,6 @@ public class StaticDataSourceReference extends PsiReferenceBase<PsiElement> {
                     }
                 }
             }
-
-            /*VirtualFile baseDir = project.getBaseDir();
-            if (baseDir != null) {
-                VirtualFile webDir = baseDir.findFileByRelativePath("web/");*/
         }
 
         return null;
@@ -135,12 +130,12 @@ public class StaticDataSourceReference extends PsiReferenceBase<PsiElement> {
         final XmlTag rootTag = xmlFile.getRootTag();
         final ArrayList<String> dataSources = new ArrayList<String>();
         if (rootTag != null) {
-            XmlTag dataSourcesTag = rootTag.findFirstSubTag("datasources");
+            final XmlTag dataSourcesTag = rootTag.findFirstSubTag("datasources");
             if (dataSourcesTag != null) {
-                XmlTag[] tags = dataSourcesTag.getSubTags();
+                final XmlTag[] tags = dataSourcesTag.getSubTags();
                 for (XmlTag t : tags) {
                     if (t.getName().contains("datasource.")) {
-                        String name = t.getAttributeValue("name");
+                        final String name = t.getAttributeValue("name");
                         dataSources.add(name);
                     }
                 }

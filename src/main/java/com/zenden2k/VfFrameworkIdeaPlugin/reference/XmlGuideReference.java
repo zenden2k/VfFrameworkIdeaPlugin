@@ -7,10 +7,11 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
-import com.intellij.util.IncorrectOperationException;
 import com.zenden2k.VfFrameworkIdeaPlugin.utils.AutocompleteHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Locale;
 
 public class XmlGuideReference extends PsiReferenceBase<PsiElement> {
     protected final Project project;
@@ -30,18 +31,18 @@ public class XmlGuideReference extends PsiReferenceBase<PsiElement> {
     @Override
     @Nullable
     public PsiElement resolve() {
-        VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
+        final VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
         if (vFiles.length != 0) {
-            final String guideNameLower = guideName.toLowerCase();
+            final String guideNameLower = guideName.toLowerCase(Locale.ROOT);
             VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/guide/" + guideNameLower + ".xml");
             if (vf == null) {
                 vf = vFiles[0].findFileByRelativePath("system/application/guide/" + guideNameLower + ".php");
             }
             if (vf != null) {
-                PsiFile psiFile = PsiManager.getInstance(project).findFile(vf);
+                final PsiFile psiFile = PsiManager.getInstance(project).findFile(vf);
                 if (psiFile instanceof XmlFile) {
-                    XmlFile xmlFile = (XmlFile) psiFile;
-                    XmlTag tag = xmlFile.getRootTag();
+                    final XmlFile xmlFile = (XmlFile) psiFile;
+                    final XmlTag tag = xmlFile.getRootTag();
                     if (tag != null) {
                         return tag;
                     }

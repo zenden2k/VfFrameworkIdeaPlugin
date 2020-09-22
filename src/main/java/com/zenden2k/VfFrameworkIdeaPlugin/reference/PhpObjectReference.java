@@ -36,19 +36,19 @@ public class PhpObjectReference extends PsiReferenceBase<PsiElement>  {
     @Override
     @Nullable
     public PsiElement resolve() {
-        String expression = path;
+        final String expression = path;
         int delimiterPos = expression.indexOf(':');
         if (delimiterPos == -1) {
-            Collection<PhpClass> classes = PhpIndex.getInstance(project).getClassesByFQN("\\C" + expression);
+            final Collection<PhpClass> classes = PhpIndex.getInstance(project).getClassesByFQN("\\C" + expression);
             if (!classes.isEmpty()) {
                 return classes.iterator().next();
             }
         } else {
-            String path = expression.substring(0, delimiterPos);
-            String objectName = expression.substring(delimiterPos + 1);
+            final String path = expression.substring(0, delimiterPos);
+            final String objectName = expression.substring(delimiterPos + 1);
             Collection<PhpClass> res = PhpIndex.getInstance(project).getClassesByFQN("\\C" + objectName);
             for (PhpClass el : res) {
-                String filePath = el.getContainingFile().getContainingDirectory().getVirtualFile().getPath();
+                final String filePath = el.getContainingFile().getContainingDirectory().getVirtualFile().getPath();
                 if (filePath.contains(path)) {
                     return el;
                 }
