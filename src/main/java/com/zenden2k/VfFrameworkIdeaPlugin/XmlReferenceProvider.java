@@ -119,21 +119,21 @@ public class XmlReferenceProvider extends PsiReferenceProvider {
                         return new PsiReference[]{ref};
                     }
                 } else if (name.equals("view") && parentName.equals("field")) {
-                    PsiFile file = xmlAttrValue.getContainingFile();
+                    final PsiFile file = xmlAttrValue.getContainingFile();
                     if (file != null) {
-                        VirtualFile vf = file.getVirtualFile();
-                        if (vf!= null) {
-                            String path = vf.getPath();
-                            Matcher matcher = pattern2.matcher(path);
+                        final PsiFile originalFile = file.getOriginalFile();
+
+                        final VirtualFile vf = originalFile.getVirtualFile();
+                        if (vf != null) {
+                            final String path = vf.getPath();
+                            final Matcher matcher = pattern2.matcher(path);
                             if (matcher.find()) {
-                                String objectName = matcher.group(1);
-                                PsiReference ref = new DataViewReference(xmlAttrValue.getValue(), objectName, element, getTextRange(xmlAttrValue), project);
+                                final String moduleName = matcher.group(1);
+                                final PsiReference ref = new DataViewReference(xmlAttrValue.getValue(), moduleName, element, getTextRange(xmlAttrValue), project);
                                 return new PsiReference[]{ref};
                             }
                         }
                     }
-
-
                 } else if (name.equals("class")) {
                     String value = xmlAttrValue.getValue();
                     TextRange range = getTextRange(xmlAttrValue);
