@@ -7,22 +7,17 @@ import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
-import com.intellij.util.IncorrectOperationException;
 import com.zenden2k.VfFrameworkIdeaPlugin.utils.AutocompleteHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class XmlControllerReference extends PsiReferenceBase<PsiElement> {
-    protected final PsiElement element;
-    protected final TextRange textRange;
     protected final Project project;
     protected final String moduleName;
     protected final String controllerName;
 
     public XmlControllerReference(String moduleName, String controllerName, PsiElement element, TextRange textRange, Project project) {
         super(element, textRange, false);
-        this.element = element;
-        this.textRange = textRange;
         this.project = project;
         this.moduleName = moduleName;
         this.controllerName = controllerName;

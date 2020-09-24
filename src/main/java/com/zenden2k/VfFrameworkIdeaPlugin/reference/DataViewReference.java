@@ -41,6 +41,9 @@ public class DataViewReference extends PsiReferenceBase<PsiElement> {
     @Override
     @Nullable
     public PsiElement resolve() {
+        if (viewName.isEmpty()) {
+            return null;
+        }
         final VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
         if (vFiles.length != 0) {
             final VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/vf_controllers/" + directoryName + "/views/dataview/" + viewName + ".tpl");

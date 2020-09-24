@@ -4,4 +4,33 @@
         <display-name>Javascript inside execJS call</display-name>
         <place><![CDATA[phpFirstArgument(phpWithName(string().equalTo("execJS")))]]></place>
     </injection>
+    <injection language="InjectablePHP" injector-id="xml">
+        <display-name>PHP inside active xml attribute</display-name>
+        <prefix>/** @var StdClass $item */ return </prefix>
+        <suffix>;</suffix>
+        <place><![CDATA[xmlAttribute().withLocalName(string().equalTo("active")).withParent(xmlTag().withLocalName(string().equalTo("button")))]]></place>
+    </injection>
+    <injection language="InjectablePHP" injector-id="xml">
+        <display-name>PHP inside export xml attribute</display-name>
+        <prefix>/** @var StdClass $item */ return </prefix>
+        <suffix>;</suffix>
+        <value-pattern>^((?!guide$|true$).*)$</value-pattern>
+        <place><![CDATA[xmlAttribute().withLocalName(string().equalTo("export")).withParent(xmlTag().withLocalName(string().equalTo("field")))]]></place>
+    </injection>
+    <injection language="InjectablePHP" injector-id="xml">
+        <display-name>PHP inside visibleif xml attribute</display-name>
+        <prefix>return </prefix>
+        <suffix>;</suffix>
+        <place><![CDATA[xmlAttribute().withLocalName(string().equalTo("visibleif")).withParent(xmlTag().withLocalName(string().oneOf("field", "interface")))]]></place>
+    </injection>
+    <injection language="InjectablePHP" injector-id="xml">
+        <display-name>PHP inside form.fieldset visibleif xml attribute</display-name>
+        <prefix>/** @var CAjaxObjectForm $this */ /** @var CAjaxObjectForm[] $currentForm */ return </prefix>
+        <suffix>;</suffix>
+        <place><![CDATA[xmlAttribute().withLocalName(string().equalTo("visibleif")).withParent(xmlTag().withLocalName(string().startsWith("form.")))]]></place>
+    </injection>
+    <injection language="JavaScript" injector-id="xml">
+        <display-name>JavaScript inside onclick, onchange xml attribute</display-name>
+        <place><![CDATA[xmlAttribute().withLocalName(string().oneOf("onclick", "onchange")).withParent(xmlTag().withLocalName(string().startsWith("form.")))]]></place>
+    </injection>
 </component>

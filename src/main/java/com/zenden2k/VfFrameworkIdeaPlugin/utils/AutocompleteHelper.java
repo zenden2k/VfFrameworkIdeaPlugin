@@ -12,10 +12,10 @@ import java.util.HashSet;
 
 public class AutocompleteHelper {
     public static Collection<String> getGuideList(Project project) {
-        ArrayList<String> result = new ArrayList<>();
-        VirtualFile[] vFiles = ProjectRootManager.getInstance(project).getContentRoots();
+        final ArrayList<String> result = new ArrayList<>();
+        final VirtualFile[] vFiles = ProjectRootManager.getInstance(project).getContentRoots();
         if (vFiles.length != 0) {
-            VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/guide");
+            final VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/guide");
             if (vf != null && vf.isDirectory()) {
                 for(VirtualFile child: vf.getChildren()) {
                     String name = child.getName();
