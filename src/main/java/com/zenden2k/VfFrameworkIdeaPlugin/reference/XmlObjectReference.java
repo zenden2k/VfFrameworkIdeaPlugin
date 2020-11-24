@@ -30,7 +30,7 @@ public class XmlObjectReference extends PsiReferenceBase<PsiElement> {
     @Override
     @Nullable
     public PsiElement resolve() {
-        if (objectName != null) {
+        if (objectName != null && !objectName.isEmpty()) {
             final VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
             if (vFiles.length != 0 ) {
                 final int delimPos = objectName.indexOf(":");

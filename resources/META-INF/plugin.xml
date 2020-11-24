@@ -31,6 +31,7 @@
 
   <extensions defaultExtensionNs="org.intellij.intelliLang">
     <injectionConfig config="injections.xml"/>
+
   </extensions>
 
   <extensions defaultExtensionNs="com.intellij">
@@ -39,6 +40,7 @@
     <dom.fileMetaData implementation="com.zenden2k.VfFrameworkIdeaPlugin.dom.object.MyDomFileDescription" rootTagName="object" domVersion="1" />
     <dom.fileMetaData implementation="com.zenden2k.VfFrameworkIdeaPlugin.dom.guide.GuideFileDescription" rootTagName="guide" domVersion="1" />
     <dom.fileMetaData implementation="com.zenden2k.VfFrameworkIdeaPlugin.dom.form.FormFileDescription" rootTagName="form.object" domVersion="1" />
+    <languageInjector implementation="com.zenden2k.VfFrameworkIdeaPlugin.MyLanguageInjector"/>
 <!--    <dom.fileMetaData implementation="com.zenden2k.VfFrameworkIdeaPlugin.dom.block.BlockFileDescription" rootTagName="block" domVersion="1" />-->
   </extensions>
 
