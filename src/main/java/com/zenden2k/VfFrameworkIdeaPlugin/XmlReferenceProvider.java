@@ -19,8 +19,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class XmlReferenceProvider extends PsiReferenceProvider {
-
-    final Pattern pattern, pattern2;
+    private final Pattern pattern, pattern2;
 
     public XmlReferenceProvider() {
         this.pattern = Pattern.compile("\\S+");
@@ -56,6 +55,12 @@ public class XmlReferenceProvider extends PsiReferenceProvider {
                     TextRange valueTextRange = xmlAttrValue.getValueTextRange();
                     valueTextRange = valueTextRange.shiftLeft(textRange.getStartOffset());
                     PsiReference ref = new DatasourceMethodReference(null, xmlAttrValue.getValue(), element, valueTextRange, project);
+                    return new PsiReference[]{ref};
+                } else if (name.equals("method") && parentName.equals("interface")) {
+                    TextRange textRange = xmlAttrValue.getTextRange();
+                    TextRange valueTextRange = xmlAttrValue.getValueTextRange();
+                    valueTextRange = valueTextRange.shiftLeft(textRange.getStartOffset());
+                    PsiReference ref = new InterfaceMethodReference(xmlAttrValue.getValue(), element, valueTextRange, project);
                     return new PsiReference[]{ref};
                 } else if (parentName.equals("datasource.link") || isDepended) {
                     String dsType = parent.getAttributeValue("static");
@@ -146,6 +151,10 @@ public class XmlReferenceProvider extends PsiReferenceProvider {
                         referenceList.add(ref);
                     }
                     return referenceList.toArray(new PsiReference[0]);
+                }
+                else if (name.equals("interface") && parentName.equals("button")) {
+                    PsiReference ref = new InterfaceReference(xmlAttrValue.getValue(), element, getTextRange(xmlAttrValue), project);
+                    return new PsiReference[]{ref};
                 } else if (enableDataBaseReferences && name.equals("table") && parentName.equals("object")) {
                     // Reference to database table
                     // TODO: use DbTableNameInfo class
