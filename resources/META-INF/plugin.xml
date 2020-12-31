@@ -47,7 +47,9 @@
 <!--  </extensionPoints>-->
 
   <actions>
-    <!-- Add your actions here -->
+    <action id="com.zenden2k.VfFrameworkIdeaPlugin.ToggleXmlAndPhpAction" class="com.zenden2k.VfFrameworkIdeaPlugin.action.ToggleXmlAndPhpAction" text="Switch XML/PHP file">
+      <keyboard-shortcut keymap="$default" first-keystroke="F4"/>
+    </action>
   </actions>
 
 
