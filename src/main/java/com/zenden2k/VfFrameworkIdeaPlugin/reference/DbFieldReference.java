@@ -30,7 +30,7 @@ public class DbFieldReference extends PsiReferenceBase<PsiElement> {
     }
 
     @Override @NotNull
-    public Object[] getVariants() {
+    public Object @NotNull [] getVariants() {
         // TODO: Implement this method
         return new Object[0];
     }

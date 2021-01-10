@@ -30,12 +30,12 @@ public class ToggleXmlAndPhpAction extends AnAction  {
             return;
         }
 
-        VirtualFile fileToSwitch = vf.getParent().findChild(newFileName);
+        final VirtualFile fileToSwitch = vf.getParent().findChild(newFileName);
 
         if (fileToSwitch == null) {
             return;
         }
-        PsiFile psiFile = PsiManager.getInstance(project).findFile(fileToSwitch);
+        final PsiFile psiFile = PsiManager.getInstance(project).findFile(fileToSwitch);
 
         if (psiFile == null) {
             return;

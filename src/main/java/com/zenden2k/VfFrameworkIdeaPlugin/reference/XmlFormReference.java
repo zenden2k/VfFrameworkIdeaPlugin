@@ -30,7 +30,7 @@ public class XmlFormReference extends PsiReferenceBase<PsiElement> {
     }
 
     @Override @NotNull
-    public Object[] getVariants() {
+    public Object @NotNull [] getVariants() {
         return AutocompleteHelper.getFormList(project, moduleName).toArray();
     }
 

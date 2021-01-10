@@ -24,7 +24,7 @@ public class XmlGuideReference extends PsiReferenceBase<PsiElement> {
     }
 
     @Override @NotNull
-    public Object[] getVariants() {
+    public Object @NotNull [] getVariants() {
         return AutocompleteHelper.getGuideList(this.project).toArray();
     }
 

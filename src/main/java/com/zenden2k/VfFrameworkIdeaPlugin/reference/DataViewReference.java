@@ -34,7 +34,7 @@ public class DataViewReference extends PsiReferenceBase<PsiElement> {
     }
 
     @Override @NotNull
-    public Object[] getVariants() {
+    public Object @NotNull [] getVariants() {
         return AutocompleteHelper.getDataViewList(this.project, directoryName).toArray();
     }
 

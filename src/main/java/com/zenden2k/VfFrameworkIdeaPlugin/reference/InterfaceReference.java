@@ -12,7 +12,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Collection;
 
 public class InterfaceReference extends PsiReferenceBase<PsiElement> {
     protected final Project project;
@@ -25,7 +24,7 @@ public class InterfaceReference extends PsiReferenceBase<PsiElement> {
     }
 
     @Override @NotNull
-    public Object[] getVariants() {
+    public Object @NotNull [] getVariants() {
         final XmlFile xmlFile = findXmlFile();
         if (xmlFile != null) {
             return getInterfaceList(xmlFile);
@@ -120,9 +119,9 @@ public class InterfaceReference extends PsiReferenceBase<PsiElement> {
 
     @Nullable
     protected String detectObjectName() {
-        XmlAttribute intefaceAttr = (XmlAttribute)myElement.getParent();
-        XmlTag buttonTag = intefaceAttr.getParent();
-        XmlTag dataviewToolbarTag = buttonTag.getParentTag();
+        final XmlAttribute interfaceAttr = (XmlAttribute)myElement.getParent();
+        final XmlTag buttonTag = interfaceAttr.getParent();
+        final XmlTag dataviewToolbarTag = buttonTag.getParentTag();
         XmlTag dataviewGridTag = null;
         if (dataviewToolbarTag != null) {
             String name = dataviewToolbarTag.getName();
@@ -143,9 +142,9 @@ public class InterfaceReference extends PsiReferenceBase<PsiElement> {
         }
 
         if (dataviewGridTag != null) {
-            XmlTag dataSourceLinkTag = dataviewGridTag.findFirstSubTag("datasource.link");
+            final XmlTag dataSourceLinkTag = dataviewGridTag.findFirstSubTag("datasource.link");
             if (dataSourceLinkTag != null) {
-                String typeAttr = dataSourceLinkTag.getAttributeValue("type");
+                final String typeAttr = dataSourceLinkTag.getAttributeValue("type");
                 if ( typeAttr != null && typeAttr.equals("object")) {
                     return dataSourceLinkTag.getAttributeValue("object");
                 }

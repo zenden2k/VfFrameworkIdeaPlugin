@@ -26,7 +26,7 @@ public class MyPsiReferenceProvider extends PsiReferenceProvider {
 
     @NotNull
     @Override
-    public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull final ProcessingContext context) {
+    public PsiReference @NotNull [] getReferencesByElement(@NotNull PsiElement element, @NotNull final ProcessingContext context) {
         final Project project = element.getProject();
         final PropertiesComponent projectProperties = PropertiesComponent.getInstance(project);
         final boolean enablePlugin = projectProperties.getBoolean(VfPluginSettings.ENABLE_PLUGIN_KEY, VfPluginSettings.getEnablePluginDefaultValue(project));

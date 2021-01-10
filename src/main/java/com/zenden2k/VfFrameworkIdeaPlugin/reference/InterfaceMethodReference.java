@@ -23,7 +23,7 @@ public class InterfaceMethodReference extends PsiReferenceBase<PsiElement> {
     }
 
     @Override @NotNull
-    public Object[] getVariants() {
+    public Object @NotNull [] getVariants() {
         PhpClass cls = findClass();
         if (cls != null) {
             // Filtering out php magic methods
@@ -36,7 +36,7 @@ public class InterfaceMethodReference extends PsiReferenceBase<PsiElement> {
     @Override
     @Nullable
     public PsiElement resolve() {
-        PhpClass cls = findClass();
+        final PhpClass cls = findClass();
         if (cls != null) {
             return cls.findMethodByName(path);
         }
@@ -54,9 +54,9 @@ public class InterfaceMethodReference extends PsiReferenceBase<PsiElement> {
         PsiFile phpFile = null;
         String fileName = "";
 
-        PsiFile file = element.getContainingFile().getOriginalFile();
+        final PsiFile file = element.getContainingFile().getOriginalFile();
         fileName = file.getName();
-        PsiDirectory dir = file.getContainingDirectory();
+        final PsiDirectory dir = file.getContainingDirectory();
         if (dir != null) {
             phpFile = dir.findFile(fileName.replace(".xml", ".php"));
         }

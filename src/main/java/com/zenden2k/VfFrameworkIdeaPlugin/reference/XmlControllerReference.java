@@ -24,7 +24,7 @@ public class XmlControllerReference extends PsiReferenceBase<PsiElement> {
     }
 
     @Override @NotNull
-    public Object[] getVariants() {
+    public Object @NotNull [] getVariants() {
         return AutocompleteHelper.getControllerList(project, moduleName).toArray();
     }
 

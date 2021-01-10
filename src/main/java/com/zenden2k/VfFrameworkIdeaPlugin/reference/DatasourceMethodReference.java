@@ -27,7 +27,7 @@ public class DatasourceMethodReference extends PsiReferenceBase<PsiElement> {
     }
 
     @Override @NotNull
-    public Object[] getVariants() {
+    public Object @NotNull [] getVariants() {
         PhpClass cls = findClass();
         if (cls != null) {
             // Filtering out php magic methods

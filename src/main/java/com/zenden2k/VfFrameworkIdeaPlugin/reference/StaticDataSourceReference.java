@@ -38,7 +38,7 @@ public class StaticDataSourceReference extends PsiReferenceBase<PsiElement> {
     }
 
     @Override @NotNull
-    public Object[] getVariants() {
+    public Object @NotNull [] getVariants() {
         final XmlFile xmlFile = findXmlFile();
         if (xmlFile != null) {
             return getDatasourceList(xmlFile);

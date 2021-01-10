@@ -28,7 +28,7 @@ public class XmlReferenceProvider extends PsiReferenceProvider {
 
     @NotNull
     @Override
-    public PsiReference[] getReferencesByElement(@NotNull PsiElement element, @NotNull final ProcessingContext context) {
+    public PsiReference @NotNull [] getReferencesByElement(@NotNull PsiElement element, @NotNull final ProcessingContext context) {
         final Project project = element.getProject();
         final PropertiesComponent projectProperties = PropertiesComponent.getInstance(project);
         final boolean enablePlugin = projectProperties.getBoolean(VfPluginSettings.ENABLE_PLUGIN_KEY, VfPluginSettings.getEnablePluginDefaultValue(project));
@@ -142,7 +142,7 @@ public class XmlReferenceProvider extends PsiReferenceProvider {
                 } else if (name.equals("class")) {
                     String value = xmlAttrValue.getValue();
                     TextRange range = getTextRange(xmlAttrValue);
-                    final ArrayList<PsiReference> referenceList = new ArrayList<PsiReference>();
+                    final ArrayList<PsiReference> referenceList = new ArrayList<>();
 
                     Matcher matcher = pattern.matcher(value);
                     while (matcher.find()) {
