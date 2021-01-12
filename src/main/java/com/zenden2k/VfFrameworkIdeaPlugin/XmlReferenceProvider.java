@@ -106,6 +106,18 @@ public class XmlReferenceProvider extends PsiReferenceProvider {
                         PsiReference ref = new XmlFormReference(moduleName, controllerName, element, getTextRange(xmlAttrValue), project);
                         return new PsiReference[]{ref};
                     }
+                } else if ( name.equals("form") && parentName.equals("interface")) {
+                    final PsiFile containingFile = element.getContainingFile();
+                    if (containingFile != null) {
+                        final PsiFile originalFile = containingFile.getOriginalFile();
+                        final PsiDirectory dir = originalFile.getContainingDirectory();
+                        if (dir != null) {
+                            final String moduleName = dir.getName();
+                            final String controllerName = xmlAttrValue.getValue();
+                            final PsiReference ref = new XmlFormReference(moduleName, controllerName, element, getTextRange(xmlAttrValue), project);
+                            return new PsiReference[]{ref};
+                        }
+                    }
                 } else if (parentName.equals("orm.link")) {
                     if (name.equals("object")) {
                         PsiReference ref = new XmlObjectReference(xmlAttrValue.getValue(), element, getTextRange(xmlAttrValue), project);
