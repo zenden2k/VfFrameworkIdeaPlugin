@@ -70,6 +70,7 @@ public class PhpGuideReference extends PsiReferenceBase<PsiElement> {
                     }
                     return xmlFile;
                 }
+                return psiFile;
             }
         }
         return null;
