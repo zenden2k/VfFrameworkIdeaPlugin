@@ -14,11 +14,22 @@ import java.util.Collection;
 public class PhpObjectReference extends PsiReferenceBase<PsiElement>  {
     protected final Project project;
     protected final String path;
+    private final String objectName;
+    private final String moduleName;
 
     public PhpObjectReference(String path, PsiElement element, TextRange textRange, Project project) {
         super(element, textRange, false);
         this.project = project;
         this.path = path;
+
+        int delimiterPos = path.indexOf(':');
+        if (delimiterPos == -1) {
+            objectName = path;
+            moduleName = null;
+        } else {
+            moduleName = path.substring(0, delimiterPos);
+            objectName = path.substring(delimiterPos + 1);
+        }
     }
 
     @Override public PsiElement handleElementRename(@NotNull String newElementName)
@@ -36,20 +47,16 @@ public class PhpObjectReference extends PsiReferenceBase<PsiElement>  {
     @Override
     @Nullable
     public PsiElement resolve() {
-        final String expression = path;
-        int delimiterPos = expression.indexOf(':');
-        if (delimiterPos == -1) {
-            final Collection<PhpClass> classes = PhpIndex.getInstance(project).getClassesByFQN("\\C" + expression);
+        if (moduleName == null) {
+            final Collection<PhpClass> classes = PhpIndex.getInstance(project).getClassesByFQN("\\C" + objectName);
             if (!classes.isEmpty()) {
                 return classes.iterator().next();
             }
         } else {
-            final String path = expression.substring(0, delimiterPos);
-            final String objectName = expression.substring(delimiterPos + 1);
             Collection<PhpClass> res = PhpIndex.getInstance(project).getClassesByFQN("\\C" + objectName);
             for (PhpClass el : res) {
                 final String filePath = el.getContainingFile().getContainingDirectory().getVirtualFile().getPath();
-                if (filePath.contains(path)) {
+                if (filePath.contains("/" + moduleName)) {
                     return el;
                 }
             }
@@ -59,9 +66,22 @@ public class PhpObjectReference extends PsiReferenceBase<PsiElement>  {
     }
 
     @Override
+    public boolean isReferenceTo(@NotNull PsiElement element) {
+        PsiElement res = resolve();
+        if (res == null ) {
+            return false;
+        }
+        // We need additional check to make possible finding usages of php file
+        // in which the class is living. Finding these usages of the class itself is not possible
+        // due to word scanner limitation
+        return this.getElement().getManager().areElementsEquivalent(res, element)
+                || this.getElement().getManager().areElementsEquivalent(res.getContainingFile(), element);
+    }
+
+    @Override
     @NotNull
     public String getCanonicalText() {
-        return path;
+        return "\\C" + objectName;
     }
 
     /*@Override @NotNull
