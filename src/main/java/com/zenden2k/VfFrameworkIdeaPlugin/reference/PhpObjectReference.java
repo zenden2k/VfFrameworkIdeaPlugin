@@ -1,8 +1,11 @@
 package com.zenden2k.VfFrameworkIdeaPlugin.reference;
 
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.util.TextRange;
+import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
+import com.intellij.psi.xml.XmlFile;
 import com.intellij.util.IncorrectOperationException;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
@@ -47,22 +50,39 @@ public class PhpObjectReference extends PsiReferenceBase<PsiElement>  {
     @Override
     @Nullable
     public PsiElement resolve() {
+        PsiElement result = null;
         if (moduleName == null) {
             final Collection<PhpClass> classes = PhpIndex.getInstance(project).getClassesByFQN("\\C" + objectName);
             if (!classes.isEmpty()) {
-                return classes.iterator().next();
+                result = classes.iterator().next();
             }
         } else {
             Collection<PhpClass> res = PhpIndex.getInstance(project).getClassesByFQN("\\C" + objectName);
             for (PhpClass el : res) {
                 final String filePath = el.getContainingFile().getContainingDirectory().getVirtualFile().getPath();
                 if (filePath.contains("/" + moduleName)) {
-                    return el;
+                    result = el;
+                    break;
                 }
             }
         }
 
-        return null;
+        if (result == null) {
+            // If class has not been not found, seek for xml file
+            final VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
+            if (vFiles.length != 0 ) {
+                final String directoryName = moduleName == null ? objectName : moduleName;
+                final VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/vf_controllers/" + directoryName + "/" + objectName + ".xml");
+                if (vf != null) {
+                    final PsiFile psiFile = PsiManager.getInstance(project).findFile(vf);
+                    if (psiFile instanceof XmlFile) {
+                        return psiFile;
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 
     @Override
