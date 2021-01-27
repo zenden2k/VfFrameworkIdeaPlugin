@@ -6,6 +6,7 @@ import com.intellij.openapi.util.TextRange;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.*;
 import com.intellij.psi.xml.XmlFile;
+import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.IncorrectOperationException;
 import com.jetbrains.php.PhpIndex;
 import com.jetbrains.php.lang.psi.elements.PhpClass;
@@ -50,39 +51,40 @@ public class PhpObjectReference extends PsiReferenceBase<PsiElement>  {
     @Override
     @Nullable
     public PsiElement resolve() {
-        PsiElement result = null;
         if (moduleName == null) {
             final Collection<PhpClass> classes = PhpIndex.getInstance(project).getClassesByFQN("\\C" + objectName);
             if (!classes.isEmpty()) {
-                result = classes.iterator().next();
+                return classes.iterator().next();
             }
         } else {
             Collection<PhpClass> res = PhpIndex.getInstance(project).getClassesByFQN("\\C" + objectName);
             for (PhpClass el : res) {
                 final String filePath = el.getContainingFile().getContainingDirectory().getVirtualFile().getPath();
                 if (filePath.contains("/" + moduleName)) {
-                    result = el;
-                    break;
+                    return el;
                 }
             }
         }
 
-        if (result == null) {
-            // If class has not been not found, seek for xml file
-            final VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
-            if (vFiles.length != 0 ) {
-                final String directoryName = moduleName == null ? objectName : moduleName;
-                final VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/vf_controllers/" + directoryName + "/" + objectName + ".xml");
-                if (vf != null) {
-                    final PsiFile psiFile = PsiManager.getInstance(project).findFile(vf);
-                    if (psiFile instanceof XmlFile) {
-                        return psiFile;
+        // If class has not been not found, seek for xml file
+        final VirtualFile[] vFiles = ProjectRootManager.getInstance(this.project).getContentRoots();
+        if (vFiles.length != 0) {
+            final String directoryName = moduleName == null ? objectName : moduleName;
+            final VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/vf_controllers/" + directoryName + "/" + objectName + ".xml");
+            if (vf != null) {
+                final PsiFile psiFile = PsiManager.getInstance(project).findFile(vf);
+                if (psiFile instanceof XmlFile) {
+                    final XmlFile xmlFile = (XmlFile) psiFile;
+                    final XmlTag tag = xmlFile.getRootTag();
+                    if (tag != null) {
+                        return tag;
                     }
+                    return psiFile;
                 }
             }
         }
 
-        return result;
+        return null;
     }
 
     @Override
