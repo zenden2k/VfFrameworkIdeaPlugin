@@ -33,4 +33,8 @@
         <display-name>JavaScript inside onclick, onchange xml attribute</display-name>
         <place><![CDATA[xmlAttribute().withLocalName(string().oneOf("onclick", "onchange")).withParent(xmlTag().withLocalName(string().startsWith("form.")))]]></place>
     </injection>
+    <injection language="JavaScript" injector-id="xml">
+        <display-name>JS inside cms.javascript XML tag</display-name>
+        <place><![CDATA[xmlAttribute().withLocalName(string().equalTo("code")).withParent(xmlTag().withLocalName(string().equalTo("cms.javascript")))]]></place>
+    </injection>
 </component>
