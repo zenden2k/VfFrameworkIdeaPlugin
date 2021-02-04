@@ -15,10 +15,11 @@ import java.util.*;
 
 public class FactoryTypeProvider /*extends CompletionContributor*/ implements PhpTypeProvider4 {
     //private final static Logger LOG = Logger.getInstance(FactoryTypeProvider.class);
+    public static final char TYPE_KEY = '\u0246';
 
     @Override
     public char getKey() {
-        return '\u0246';
+        return TYPE_KEY;
     }
 
     @Override

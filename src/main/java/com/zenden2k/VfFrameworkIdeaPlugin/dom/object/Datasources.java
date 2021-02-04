@@ -6,5 +6,8 @@ import java.util.List;
 
 public interface Datasources extends com.intellij.util.xml.DomElement {
     @SubTagList("datasource.orm")
-    List<Datasource> getDatasources();
+    List<Datasource> getOrmDatasources();
+
+    @SubTagList("datasource.merge")
+    List<Datasource> getMergeDatasources();
 }

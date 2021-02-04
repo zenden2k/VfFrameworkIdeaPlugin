@@ -8,13 +8,15 @@ public class VfPluginSettingsForm {
     private JPanel panel;
     private JCheckBox enablePluginCheckbox;
     private JCheckBox enableDatabaseReferencesCheckBox;
+    private JCheckBox enableGetStaticDatasourceTypeProviding;
 
     public VfPluginSettingsForm() {
         enablePluginCheckbox.addItemListener(new ItemListener() {
             @Override
             public void itemStateChanged(ItemEvent itemEvent) {
                 //(itemEvent.getStateChange() == ItemEvent.SELECTED){
-                    enableDatabaseReferencesCheckBox.setEnabled(enablePluginCheckbox.isSelected());
+                enableDatabaseReferencesCheckBox.setEnabled(enablePluginCheckbox.isSelected());
+                enableGetStaticDatasourceTypeProviding.setEnabled(enablePluginCheckbox.isSelected());
                 //}
             }
         });
@@ -38,5 +40,13 @@ public class VfPluginSettingsForm {
 
     public void setEnableDatabaseReferences(boolean enable) {
         enableDatabaseReferencesCheckBox.setSelected(enable);
+    }
+
+    public boolean getEnableGetStaticDatasourceTypeProviding(){
+        return enableGetStaticDatasourceTypeProviding.isSelected();
+    }
+
+    public void setEnableGetStaticDatasourceTypeProviding(boolean enable) {
+        enableGetStaticDatasourceTypeProviding.setSelected(enable);
     }
 }

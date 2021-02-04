@@ -5,7 +5,9 @@ import com.intellij.openapi.project.Project;
 public class VfPluginSettings {
     public static final String ENABLE_PLUGIN_KEY = "VfFrameworkIdeaPlugin.settings.enablePlugin";
     public static final String ENABLE_DATABASE_REFERENCES = "VfFrameworkIdeaPlugin.settings.enableDataBaseReferences";
+    public static final String ENABLE_GETSTATICDATASOURCE_TYPE_PROVIDING_KEY = "VfFrameworkIdeaPlugin.settings.enableGetStaticDatasourceTypeProviding";
     public static final boolean ENABLE_DATABASE_REFERENCES_DEFAULT_VALUE = false;
+    public static final boolean ENABLE_GETSTATICDATASOURCE_TYPE_PROVIDING_DEFAULT_VALUE = false;
 
     public static boolean getEnablePluginDefaultValue(Project project) {
         return project.getName().contains("\u006b\u0061\u0064\u0061\u006d\u005f\u006f\u006c\u0064");

@@ -40,6 +40,7 @@
 
   <extensions defaultExtensionNs="com.jetbrains.php">
     <typeProvider4 implementation="com.zenden2k.VfFrameworkIdeaPlugin.FactoryTypeProvider"/>
+    <typeProvider4 implementation="com.zenden2k.VfFrameworkIdeaPlugin.GetStaticDatasourceFactoryTypeProvider"/>
     <!--    <completion.contributor language="PHP" implementationClass="com.jetbrains.php.lang.psi.resolve.types.PhpStaticFactoryTypeProvider"/>-->
   </extensions>
 
