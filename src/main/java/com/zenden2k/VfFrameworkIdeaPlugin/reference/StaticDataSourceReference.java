@@ -69,6 +69,19 @@ public class StaticDataSourceReference extends PsiReferenceBase<PsiElement> {
             final Collection<PhpClass> phpClasses = PhpIndexUtils.getByType(type, phpIndex);
 
             for (PhpClass cl : phpClasses) {
+                // Fix for $this->getStaticDatasource()
+                PsiFile file = cl.getContainingFile();
+                if (file == this.getElement().getContainingFile()) {
+                    String fileName = file.getName();
+                    PsiDirectory dir = file.getContainingDirectory();
+                    PsiFile xmlPsiFile = dir.findFile(fileName.replace(".php", ".xml"));
+                    if (xmlPsiFile instanceof XmlFile) {
+                        return (XmlFile) xmlPsiFile;
+                    }
+                }
+            }
+
+            for (PhpClass cl : phpClasses) {
                 PsiFile file = cl.getContainingFile();
                 String fileName = file.getName();
                 PsiDirectory dir = file.getContainingDirectory();
