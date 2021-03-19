@@ -199,6 +199,12 @@ public class XmlReferenceProvider extends PsiReferenceProvider {
                         XmlTag objectTag = fieldsTag.getParentTag();
                         if (objectTag != null && objectTag.getName().equals("object")) {
                             String table = objectTag.getAttributeValue("table");
+                            if (table == null || table.isEmpty()) {
+                                String objectName = objectTag.getAttributeValue("name");
+                                if (objectName != null && objectName.equals("user")) {
+                                    table = "users";
+                                }
+                            }
                             if (table != null && !table.isEmpty()) {
                                 PsiReference ref = new DbFieldReference(attrValue, table, element, getTextRange(xmlAttrValue) , project);
                                 return new PsiReference[]{ref};

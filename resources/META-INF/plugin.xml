@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.zenden2k.VfFrameworkIdeaPlugin</id>
   <name>Vf Framework IDEA Integration</name>
-  <version>1.4</version>
+  <version>1.5.1</version>
   <vendor email="zenden2k@gmail.com" url="http://zenden2k.com">Sergey Svistunov</vendor>
 
   <description><![CDATA[
@@ -9,8 +9,7 @@
     ]]></description>
 
     <change-notes><![CDATA[
-      - Разрешение ссылок на interface в XML файлах
-      - Переключение по горячей клавише (F4) между XML и PHP файлом
+        - Фикс для работы ссылки на поля таблицы users
       ]]>
     </change-notes>
 
