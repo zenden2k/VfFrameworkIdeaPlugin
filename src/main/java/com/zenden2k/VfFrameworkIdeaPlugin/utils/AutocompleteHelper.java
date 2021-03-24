@@ -4,6 +4,10 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.roots.ProjectRootManager;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.google.common.io.Files;
+import com.intellij.psi.PsiFile;
+import com.intellij.psi.PsiManager;
+import com.intellij.psi.xml.XmlFile;
+import com.intellij.psi.xml.XmlTag;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -85,6 +89,33 @@ public class AutocompleteHelper {
                     final String name = child.getName();
                     if (name.endsWith(".tpl")) {
                         result.add(Files.getNameWithoutExtension(child.getName()));
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static Collection<String> getUserRightsAliases(Project project) {
+        ArrayList<String> result = new ArrayList<>();
+        final VirtualFile[] vFiles = ProjectRootManager.getInstance(project).getContentRoots();
+
+        if (vFiles.length != 0) {
+            VirtualFile vf = vFiles[0].findFileByRelativePath("system/application/guide/user-rights.xml");
+            if (vf != null) {
+                final PsiFile psiFile = PsiManager.getInstance(project).findFile(vf);
+                if (psiFile instanceof XmlFile) {
+                    final XmlFile xmlFile = (XmlFile) psiFile;
+                    final XmlTag tag = xmlFile.getRootTag();
+                    if (tag != null) {
+                        XmlTag[] itemTags = tag.findSubTags("item");
+                        for(XmlTag item: itemTags) {
+                            String aliasValue = item.getAttributeValue("alias");
+                            if (aliasValue != null) {
+                                result.add(aliasValue);
+                            }
+                        }
+
                     }
                 }
             }

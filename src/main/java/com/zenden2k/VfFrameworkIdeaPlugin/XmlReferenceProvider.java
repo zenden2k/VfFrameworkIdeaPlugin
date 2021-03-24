@@ -12,6 +12,7 @@ import com.intellij.psi.xml.XmlTag;
 import com.intellij.util.ProcessingContext;
 import com.zenden2k.VfFrameworkIdeaPlugin.config.VfPluginSettings;
 import com.zenden2k.VfFrameworkIdeaPlugin.reference.*;
+import com.zenden2k.VfFrameworkIdeaPlugin.utils.StringHelper;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -167,6 +168,16 @@ public class XmlReferenceProvider extends PsiReferenceProvider {
                 else if (name.equals("interface") && parentName.equals("button")) {
                     PsiReference ref = new InterfaceReference(xmlAttrValue.getValue(), element, getTextRange(xmlAttrValue), project);
                     return new PsiReference[]{ref};
+                } else if (name.equals("access")) {
+                    TextRange range = getTextRange(xmlAttrValue);
+                    final ArrayList<PsiReference> referenceList = new ArrayList<>();
+                    StringHelper.StringMatch[] matches = StringHelper.splitString(xmlAttrValue.getValue(), ",");
+                    for(StringHelper.StringMatch match: matches) {
+                        referenceList.add(new UserRightsAliasReference(match.getValue(), element, new TextRange(range.getStartOffset()
+                                + match.getStartPos(),
+                                range.getStartOffset() + match.getStartPos() + match.getLength()), project, null));
+                    }
+                    return referenceList.toArray(new PsiReference[0]);
                 } else if (enableDataBaseReferences && name.equals("table") && parentName.equals("object")) {
                     // Reference to database table
                     // TODO: use DbTableNameInfo class
