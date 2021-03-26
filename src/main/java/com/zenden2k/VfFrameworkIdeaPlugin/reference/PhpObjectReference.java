@@ -15,6 +15,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
+/*
+  Reference to an xml object file
+
+  Example:
+
+    GetObject("[REFERENCE]")
+ */
 public class PhpObjectReference extends PsiReferenceBase<PsiElement>  {
     protected final Project project;
     protected final String path;

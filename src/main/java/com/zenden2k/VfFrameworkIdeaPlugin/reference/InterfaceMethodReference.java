@@ -10,6 +10,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
+/*
+  Reference to object's method from an interface
+
+  Example:
+
+ <interface name="group" method="[REFERENCE]"/>
+ */
 public class InterfaceMethodReference extends PsiReferenceBase<PsiElement> {
     protected final PsiElement element;
     protected final Project project;

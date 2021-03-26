@@ -178,7 +178,7 @@ public class XmlReferenceProvider extends PsiReferenceProvider {
                                 range.getStartOffset() + match.getStartPos() + match.getLength()), project, null));
                     }
                     return referenceList.toArray(new PsiReference[0]);
-                } else if (enableDataBaseReferences && name.equals("table") && parentName.equals("object")) {
+                } else if (enableDataBaseReferences && ( name.equals("table") && (parentName.equals("object") || parentName.equals("join")))) {
                     // Reference to database table
                     // TODO: use DbTableNameInfo class
                     String[] tokens = attrValue.split("\\s+");

@@ -16,7 +16,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
+/*
+  Reference to xml (or php) guide file
 
+  Example:
+
+    GetObject("guide")->getAssociative("[REFERENCE]");
+ */
 public class PhpGuideReference extends PsiReferenceBase<PsiElement> {
     protected final Project project;
     protected final String guideName;

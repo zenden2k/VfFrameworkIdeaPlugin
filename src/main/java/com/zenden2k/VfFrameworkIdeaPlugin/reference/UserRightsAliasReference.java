@@ -17,7 +17,13 @@ import com.zenden2k.VfFrameworkIdeaPlugin.utils.AutocompleteHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/*
+    Reference to user role alias from php and xml files
 
+    Example:
+
+    $user->checkAccess('[REFERENCE],[REFERENCE],...')
+ */
 public class UserRightsAliasReference extends PsiReferenceBase<PsiElement> {
     protected final Project project;
     protected final String alias;

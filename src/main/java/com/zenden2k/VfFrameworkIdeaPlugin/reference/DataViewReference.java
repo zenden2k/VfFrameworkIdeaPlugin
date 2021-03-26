@@ -11,7 +11,12 @@ import com.zenden2k.VfFrameworkIdeaPlugin.utils.AutocompleteHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-
+/*
+ * Reference to smarty file from dataview table field
+ *
+ * Example:
+ * <field name="cpm" title="test" sorting="true" view="[REFERENCE]"/>
+ */
 public class DataViewReference extends PsiReferenceBase<PsiElement> {
     protected final Project project;
     protected final String viewName;

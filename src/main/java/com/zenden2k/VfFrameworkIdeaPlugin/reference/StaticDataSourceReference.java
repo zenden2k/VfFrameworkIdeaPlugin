@@ -17,6 +17,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/*
+  Reference to an object's datasource from PHP file
+
+  Example:
+
+    GetObject("user")->getStaticDatasource("[REFERENCE]")
+ */
 public class StaticDataSourceReference extends PsiReferenceBase<PsiElement> {
     protected final Project project;
     protected final String path;

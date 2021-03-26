@@ -11,6 +11,13 @@ import com.zenden2k.VfFrameworkIdeaPlugin.utils.AutocompleteHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/*
+    Reference to XML controller file from page xml file
+
+    Example:
+
+    <cms.controller module="user" controller="[REFERENCE]">
+ */
 public class XmlControllerReference extends PsiReferenceBase<PsiElement> {
     protected final Project project;
     protected final String moduleName;
@@ -52,6 +59,17 @@ public class XmlControllerReference extends PsiReferenceBase<PsiElement> {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean isReferenceTo(@NotNull PsiElement element) {
+        PsiElement res = resolve();
+        if (res == null ) {
+            return false;
+        }
+        // We need additional check to make possible finding usages of controller's xml file
+        return this.getElement().getManager().areElementsEquivalent(res, element)
+                || this.getElement().getManager().areElementsEquivalent(res.getContainingFile(), element);
     }
 
     @Override

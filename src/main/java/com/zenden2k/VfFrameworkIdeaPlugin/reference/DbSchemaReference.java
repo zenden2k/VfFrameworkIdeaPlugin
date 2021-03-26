@@ -8,6 +8,13 @@ import com.zenden2k.VfFrameworkIdeaPlugin.utils.DatabaseUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/*
+ * Reference to database schema
+ *
+ * Example:
+ *
+ * <join type="left" table="[REFERENCE].table"/>
+ */
 public class DbSchemaReference  extends PsiReferenceBase<PsiElement> {
     protected final PsiElement element;
     protected final TextRange textRange;

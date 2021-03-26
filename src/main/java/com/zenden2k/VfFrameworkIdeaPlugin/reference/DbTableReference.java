@@ -12,6 +12,13 @@ import com.zenden2k.VfFrameworkIdeaPlugin.utils.DatabaseUtils;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/*
+ * Reference to database table
+ *
+ * Example:
+ *
+ * <object name="user" table="[REFERENCE]">
+ */
 public class DbTableReference extends PsiReferenceBase<PsiElement> {
     protected final PsiElement element;
     protected final TextRange textRange;

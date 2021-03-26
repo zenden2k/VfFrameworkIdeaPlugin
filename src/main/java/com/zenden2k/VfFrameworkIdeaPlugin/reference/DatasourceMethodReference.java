@@ -12,6 +12,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 
+/*
+    Reference to an object's method.
+
+    Example:
+    <datasource.orm name="dsIpList" method="[REFERENCE]"/>
+ */
 public class DatasourceMethodReference extends PsiReferenceBase<PsiElement> {
     protected final PsiElement element;
     protected final Project project;

@@ -13,6 +13,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
+/*
+    Reference to form
+
+    Example:
+
+    <form.link module="stream" form="[REFERENCE]" success="reload">
+ */
 public class XmlFormReference extends PsiReferenceBase<PsiElement> {
     protected final PsiElement element;
     protected final TextRange textRange;

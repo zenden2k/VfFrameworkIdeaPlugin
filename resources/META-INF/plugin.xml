@@ -1,7 +1,7 @@
 <idea-plugin>
   <id>com.zenden2k.VfFrameworkIdeaPlugin</id>
   <name>Vf Framework IDEA Integration</name>
-  <version>1.6.0</version>
+  <version>1.6.1</version>
   <vendor email="zenden2k@gmail.com" url="http://zenden2k.com">Sergey Svistunov</vendor>
 
   <description><![CDATA[
@@ -9,7 +9,8 @@
     ]]></description>
 
     <change-notes><![CDATA[
-        - Resolve references and provide autocompletion of user rights aliases
+        - Allow find usages of controller xml file <br/>
+        - Resolve database table references in joins (in object xml files)
       ]]>
     </change-notes>
 

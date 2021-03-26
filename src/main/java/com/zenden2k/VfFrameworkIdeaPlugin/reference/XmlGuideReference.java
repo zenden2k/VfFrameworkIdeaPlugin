@@ -13,6 +13,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Locale;
 
+/*
+    Reference to xml (or php) guide file from xml file
+
+   <field name="name" export="true" guide="[REFERENCE]" sorting="true/>
+
+   TODO: merge with PhpGuideReference
+ */
 public class XmlGuideReference extends PsiReferenceBase<PsiElement> {
     protected final Project project;
     protected final String guideName;

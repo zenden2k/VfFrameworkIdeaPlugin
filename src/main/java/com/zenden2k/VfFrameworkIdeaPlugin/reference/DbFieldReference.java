@@ -13,6 +13,17 @@ import com.zenden2k.VfFrameworkIdeaPlugin.utils.DbTableNameInfo;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/*
+ * Reference to database table field
+ *
+ * Example:
+ *
+ * <object name="user">
+ *     <fields>
+ *         <field name="[REFERENCE]" key="true" autoincrement="true"/>
+ *     </fields>
+ * </object>
+ */
 public class DbFieldReference extends PsiReferenceBase<PsiElement> {
     protected final PsiElement element;
     protected final TextRange textRange;

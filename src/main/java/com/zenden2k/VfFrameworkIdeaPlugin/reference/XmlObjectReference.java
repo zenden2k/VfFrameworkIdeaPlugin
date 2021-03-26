@@ -11,6 +11,13 @@ import com.zenden2k.VfFrameworkIdeaPlugin.dom.object.Object;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/*
+    Reference to an xml object
+
+    Example:
+
+    <datasource.link type="object" object="[REFERENCE]" datasource="dsExample">
+ */
 public class XmlObjectReference extends PsiReferenceBase<PsiElement> {
     protected final Project project;
     protected final String objectName;

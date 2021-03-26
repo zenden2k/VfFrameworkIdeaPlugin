@@ -13,6 +13,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 
+/*
+  Reference to an interface
+
+  Example:
+  <buttons>
+    <button interface="[REFERENCE]"/>
+  </buttons>
+ */
 public class InterfaceReference extends PsiReferenceBase<PsiElement> {
     protected final Project project;
     protected final String path;
