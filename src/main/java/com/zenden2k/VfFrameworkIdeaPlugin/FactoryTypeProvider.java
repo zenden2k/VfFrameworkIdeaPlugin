@@ -74,7 +74,7 @@ public class FactoryTypeProvider /*extends CompletionContributor*/ implements Ph
             final Collection<? extends PhpNamedElement> res = PhpIndex.getInstance(project).getAnyByFQN("\\C" + objectName);
             for(PhpNamedElement el: res) {
                 String filePath = el.getContainingFile().getContainingDirectory().getVirtualFile().getPath();
-                if(filePath.contains(path)) {
+                if(filePath.contains("/" + path + "/") || filePath.endsWith("/" + path)) {
                     return Collections.singletonList(el);
                 }
             }

@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id 'org.jetbrains.intellij' version '0.7.2'
+}
+
+group 'com.zenden2k'
+version '1.6.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+}
+
+// See https://github.com/JetBrains/gradle-intellij-plugin/
+intellij {
+    type='IU'
+    version '2020.3.3'
+    plugins = ['com.jetbrains.php:203.7717.11', 'com.intellij.css', 'com.intellij.database'] // https://plugins.jetbrains.com/plugin/6610-php/versions
+}
+
+sourceSets {
+    test.java.srcDirs += 'src/test'
+    test.resources.srcDirs += 'src/test/resources'
+}
+
+patchPluginXml {
+    changeNotes """
+     - Allow find usages of controller xml file <br/>
+     - Resolve database table references in joins (in object xml files)"""
+}
+test {
+    useJUnitPlatform()
+    // Show test results.
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
