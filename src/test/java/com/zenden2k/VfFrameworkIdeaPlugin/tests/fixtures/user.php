@@ -6,4 +6,6 @@ class CXMLObject {
 }
 
 class CUser extends CXMLObject {
+    public function test2() {
+    }
 }

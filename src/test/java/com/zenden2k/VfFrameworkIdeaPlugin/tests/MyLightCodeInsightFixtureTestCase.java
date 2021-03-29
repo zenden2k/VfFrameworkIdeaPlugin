@@ -10,7 +10,8 @@ import com.intellij.patterns.ElementPattern;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class MyLightCodeInsightFixtureTestCase {
-    CodeInsightTestFixture myFixture;
+    protected CodeInsightTestFixture myFixture;
+
     public void assertReferenceMatch(@NotNull FileType fileType, @NotNull String contents, @NotNull ElementPattern<?> pattern) {
         myFixture.configureByText(fileType, contents);
         PsiElement psiElement = myFixture.getFile().findElementAt(myFixture.getCaretOffset());
