@@ -4,3 +4,6 @@ class CXMLObject {
 
     }
 }
+
+class CUser extends CXMLObject {
+}

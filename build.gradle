@@ -19,7 +19,8 @@ dependencies {
 intellij {
     type='IU'
     version '2020.3.3'
-    plugins = ['com.jetbrains.php:203.7717.11', 'com.intellij.css', 'com.intellij.database'] // https://plugins.jetbrains.com/plugin/6610-php/versions
+    // https://plugins.jetbrains.com/plugin/6610-php/versions
+    plugins = ['com.jetbrains.php:203.7717.11', 'com.intellij.css', 'com.intellij.database']
 }
 
 sourceSets {

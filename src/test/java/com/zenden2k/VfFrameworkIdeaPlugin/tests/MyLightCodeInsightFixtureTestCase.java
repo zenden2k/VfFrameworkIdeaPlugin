@@ -2,13 +2,15 @@ package com.zenden2k.VfFrameworkIdeaPlugin.tests;
 
 import com.intellij.psi.*;
 
-import com.intellij.testFramework.fixtures.BasePlatformTestCase;
 import com.intellij.openapi.fileTypes.FileType;
+import com.intellij.testFramework.fixtures.CodeInsightTestFixture;
 import org.jetbrains.annotations.NotNull;
 import com.intellij.patterns.ElementPattern;
 
-public abstract class MyLightCodeInsightFixtureTestCase extends BasePlatformTestCase {
+import static org.junit.jupiter.api.Assertions.fail;
 
+public abstract class MyLightCodeInsightFixtureTestCase {
+    CodeInsightTestFixture myFixture;
     public void assertReferenceMatch(@NotNull FileType fileType, @NotNull String contents, @NotNull ElementPattern<?> pattern) {
         myFixture.configureByText(fileType, contents);
         PsiElement psiElement = myFixture.getFile().findElementAt(myFixture.getCaretOffset());
