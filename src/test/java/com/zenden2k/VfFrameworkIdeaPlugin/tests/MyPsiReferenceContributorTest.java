@@ -24,7 +24,6 @@ public class MyPsiReferenceContributorTest extends MyLightCodeInsightFixtureTest
 
         myFixture.copyFileToProject("GetStaticDatasourceFixture.php");
         myFixture.copyFileToProject("user.xml");
-        //myFixture.enableInspections();
     }
 
     protected String getTestDataPath() {

@@ -23,11 +23,6 @@ intellij {
     plugins = ['com.jetbrains.php:203.7717.11', 'com.intellij.css', 'com.intellij.database']
 }
 
-sourceSets {
-    test.java.srcDirs += 'src/test'
-    test.resources.srcDirs += 'src/test/resources'
-}
-
 patchPluginXml {
     changeNotes """
      - Allow find usages of controller xml file <br/>
