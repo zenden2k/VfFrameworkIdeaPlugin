@@ -64,10 +64,9 @@ public class MyPsiReferenceContributorTest extends MyLightCodeInsightFixtureTest
                         "}\n"*/
         assertReferenceMatchOnParent(
                 "test.php",
-                """
-                        <?php
-                        $user = new \\CUser();
-                        $user->getStaticDatasource('t<caret>est');"""
+                "<?php\n"+
+                    "$user = new \\CUser();\n" +
+                    "$user->getStaticDatasource('t<caret>est');\n"
                 ,
                 XmlPatterns.xmlTag().withName("datasource.orm").withAttributeValue("name", "test")
 //                PlatformPatterns.psiElement().withName("datasource.orm")
@@ -78,10 +77,9 @@ public class MyPsiReferenceContributorTest extends MyLightCodeInsightFixtureTest
     public void testGetGuideValueReference() {
         assertReferenceMatchOnParent(
                 "test2.php",
-                """
-                        <?php
-                        $guide = GetObject('guide');
-                        $guide->getAssociative('t<caret>est-guide');"""
+                "<?php\n" +
+                    "$guide = GetObject('guide');\n" +
+                    "$guide->getAssociative('t<caret>est-guide');\n"
                 ,
                 XmlPatterns.xmlTag().withName("guide").withAttributeValue("name", "test-guide")
         );
@@ -91,10 +89,9 @@ public class MyPsiReferenceContributorTest extends MyLightCodeInsightFixtureTest
     public void testGetGuideValueReferenceAutocomplete() {
         myFixture.configureByText(
                 "test2.php",
-                """
-                        <?php
-                        $guide = GetObject('guide');
-                        $guide->getAssociative('<caret>');"""
+                "<?php\n" +
+                "$guide = GetObject('guide');\n" +
+                "$guide->getAssociative('<caret>');\n"
         );
         myFixture.completeBasic();
         List<String> completion = myFixture.getLookupElementStrings();
